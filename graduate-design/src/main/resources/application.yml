@@ -1,0 +1,29 @@
+server:
+  port: 8989
+  context-path: /graduate
+  jsp-servlet:
+    init-parameters:
+      development: true
+spring:
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/graduate
+    username: root
+    password: root
+  redis:
+    port: 7000
+    database: 0
+    host: 192.168.46.135
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0
+      timeout: 0
+mybatis:
+  type-aliases-package: com.baizhi.entity

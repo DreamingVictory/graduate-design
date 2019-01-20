@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.CategoryMapper">
+
+
+    <resultMap id="rm1" type="Category">
+        <id column="fid" property="categoryId"/>
+        <result column="fname" property="categoryName"/>
+        <result column="fpid" property="parentId"/>
+        <collection property="categoryList" ofType="Category">
+            <id column="sid" property="categoryId"/>
+            <result column="sname" property="categoryName"/>
+            <result column="spid" property="parentId"/>
+        </collection>
+    </resultMap>
+    <select id="queryAllCategory" resultMap="rm1">
+        select f.category_id fid,f.category_name fname,f.parent_id fpid,s.category_id sid,s.category_name sname,s.parent_id spid
+        from category f join category s on f.category_id=s.parent_id
+    </select>
+
+
+</mapper>

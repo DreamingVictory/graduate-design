@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.RoleMapper">
+    <select id="queryAllRoleByPhone" parameterType="String" resultType="Role">
+        select ro.*
+        from user d
+                 LEFT JOIN userRole r on d.id = r.user_id
+                 LEFT JOIN role ro on r.role_id = ro.role_id
+        where d.phone = #{phone}
+    </select>
+    <select id="queryAllAuthorityByRole" parameterType="String" resultType="Authority">
+        select au.authority
+        from user d
+                 inner JOIN userRole r on d.id = r.user_id
+                 inner JOIN role ro on r.role_id = ro.role_id
+                 inner JOIN
+                 roleAuthority ra on ro.role_id = ra.role_id
+                 inner JOIN authority au on ra.authority_id = au.id
+        where ro.role_name = #{roleName}
+        GROUP BY authority
+
+    </select>
+</mapper>
