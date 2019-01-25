@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 
     <script type="text/javascript">
-        var pageNo = 0;
+        var pageNo = 1;
         $(function () {
             layui.config({
                 base: '../res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
@@ -98,52 +98,64 @@
                 );
 
 
-                /*今日必抢*/
-                window.setInterval(
-                    function () {
-                        $("#lunbo").empty();
+                for (var p = 0; p < 3; p++) {
+                    /*今日必抢*/
+                    console.log(pageNo);
+                    $.ajax({
+                        url: "${pageContext.request.contextPath}/animal/queryByDiscount",
+                        data: "pageNo=" + pageNo + "&pageRows=4",
+                        dataType: "JSON",
+                        async: false,
+                        success: function (res) {
+                            for (var i = 0; i < res.length; i++) {
+                                var div = $("<div class=\"item\"></div>");
+                                var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
+                                var div2 = $("<div class=\"title\"></div>").text(res[i].title);
+                                var div3 = $("<div class=\"price\"></div>");
+                                var span = $("<span></span>").text("￥" + res[i].ciurPic);
+                                var del = $("<del></del>").text("￥" + res[i].oriPic);
+                                div3.append(span).append(del);
+                                div.append(a).append(div2).append(div3);
+                                $("#lunbo" + pageNo).append(div);
 
-                        if (pageNo == 0) {
-                            pageNo = 1;
-                        } else if (pageNo == 1) {
-                            pageNo = 2;
-                        } else if (pageNo == 2) {
-                            pageNo = 3;
-                        } else {
-                            pageNo = 1;
-                        }
-                        $.post(
-                            "${pageContext.request.contextPath}/animal/queryByDiscount",
-                            "pageNo=" + pageNo + "&pageRows=4",
-                            function (res) {
-                                for (var i = 0; i < res.length; i++) {
-
-                                    var div = $("<div class=\"item\"></div>");
-                                    var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
-                                    var div2 = $("<div class=\"title\"></div>").text(res[i].title);
-                                    var div3 = $("<div class=\"price\"></div>");
-                                    var span = $("<span></span>").text("￥" + res[i].ciurPic);
-                                    var del = $("<del></del>").text("￥" + res[i].oriPic);
-                                    div3.append(span).append(del);
-                                    div.append(a).append(div2).append(div3);
-                                    $("#lunbo").append(div);
-
-                                }
-                                var length = res.length;
-                                var button = $("<button id='lunboBtn' onclick='lunboMsg(length)' class='layui-icon layui-carousel-arrow' lay-type='add'>></button>");
-                                $("#test1").append(button);
                             }
-                        )
-                    }, 2000);
+                            var button = $("<button id='lunboBtn' onclick='lunboMsg(" + pageNo + ")' class='layui-icon layui-carousel-arrow' lay-type='add'></button>");
+                            $("#test1").append(button);
+                        }
+                    })
+                    pageNo++;
+                }
+
+
             });
         })
 
-        /*   function lunboMsg(length) {
-             alert(length);
+        function lunboMsg(page) {
+            page = page + 1;
+            $("#lunbo" + page).empty();
+            $.ajax({
+                url: "${pageContext.request.contextPath}/animal/queryByDiscount",
+                data: "pageNo=" + page + "&pageRows=4",
+                dataType: "JSON",
+                async: false,
+                success: function (res) {
+                    for (var i = 0; i < res.length; i++) {
+                        var div = $("<div class=\"item\"></div>");
+                        var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
+                        var div2 = $("<div class=\"title\"></div>").text(res[i].title);
+                        var div3 = $("<div class=\"price\"></div>");
+                        var span = $("<span></span>").text("￥" + res[i].ciurPic);
+                        var del = $("<del></del>").text("￥" + res[i].oriPic);
+                        div3.append(span).append(del);
+                        div.append(a).append(div2).append(div3);
+                        $("#lunbo" + page).append(div);
 
-
-           }*/
-        // window.setTimeout(lunboMsg(),3000);//定时器  3秒后执行下一页展示的方法
+                    }
+                    var button = $("<button id='lunboBtn' onclick='lunboMsg(" + page + ")' class='layui-icon layui-carousel-arrow' lay-type='add'></button>");
+                    $("#test1").append(button);
+                }
+            })
+        }
 
 
     </script>
@@ -231,7 +243,13 @@
                 <div class="sk_bd">
                     <div class="layui-carousel" id="test1" lay-arrow="always">
                         <div carousel-item>
-                            <div class="item-box" id="lunbo">
+                            <div class="item-box" id="lunbo1">
+
+                            </div>
+                            <div class="item-box" id="lunbo2">
+
+                            </div>
+                            <div class="item-box" id="lunbo3">
 
                             </div>
                         </div>
