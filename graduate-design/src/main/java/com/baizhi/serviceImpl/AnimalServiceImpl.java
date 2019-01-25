@@ -36,4 +36,35 @@ public class AnimalServiceImpl implements AnimalService {
         }
         return list;
     }
+
+    @Override
+    public List<Animal> queryByDiscount() {
+        List<Animal> animals = animalMapper.queryByDiscount();
+        if(animals.isEmpty()){
+            throw new RuntimeException("没有折扣商品o");
+        }
+        List<Animal> list=new ArrayList<>();
+        for (Animal animal : animals) {
+            list.add(animal);
+            if(list.size()==12){
+                break;
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Animal> queryByCatDog() {
+        List<Animal> animals = animalMapper.queryByCatDog();
+
+        List<Animal> list=new ArrayList<>();
+        for (Animal animal : animals) {
+
+            list.add(animal);
+            if(list.size()==5){
+                break;
+            }
+        }
+        return list;
+    }
 }

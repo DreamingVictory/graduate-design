@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.baizhi.mapper.AnimalMapper">
     <select id="queryAnimalsByCommend"  resultType="Animal">
-        select * from animal order by recommand desc
+        select id,title,ciur_pic ciurPic,img,ori_pic oriPic  from animal order by recommand desc
+    </select>
+    <select id="queryByDiscount" resultType="Animal">
+        select id,title,ciur_pic ciurPic,img,ori_pic oriPic from animal order by discount
+    </select>
+    <select id="queryByCatDog" resultType="Animal">
+        select id,img,title from animal where category_id in (select category_id from category  where parent_id in (1,2))
     </select>
 
 </mapper>

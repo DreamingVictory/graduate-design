@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AnimalMapper extends Mapper<Animal> {
     public List<Animal> queryAnimalsByCommend();
+    public List<Animal> queryByDiscount();
+    public List<Animal> queryByCatDog();
 }

@@ -26,7 +26,7 @@ public class ShiroFilterConf {
 
         /*注意：顺序是有要求的，对除了首页请求之外的所有请求不拦截*/
         map.put("/**", "anon");
-        map.put("/html/index.jsp", "authc");//添加认证过滤器 拦截所有的请求  没有认证则跳转到登录界面
+        //map.put("/html/index.jsp", "authc");//添加认证过滤器 拦截所有的请求  没有认证则跳转到登录界面
         shiroFilterFactoryBean.setLoginUrl("/html/login.jsp");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);//定义过滤器链（多个过滤器）
 
