@@ -140,7 +140,6 @@
                                 $("#lunbo" + pageNo).append(div);
 
                             }
-
                         }
                     })
                     pageNo++;
