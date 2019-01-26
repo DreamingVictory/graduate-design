@@ -41,7 +41,7 @@
                 //    success : function(res){
                 //      console.log(res)
                 //      listCont.innerHTML = mm.renderHtml(html,res)
-                //      ins.reload(option);
+                //      ins.relo13[';[/////////////ad(option);
                 //    },
                 //    error: function(res){
                 //      console.log(res);
@@ -123,6 +123,7 @@
                 for (var p = 0; p < 3; p++) {
                     /*今日必抢*/
                     $.ajax({
+                        type:"POST",
                         url: "${pageContext.request.contextPath}/animal/queryByDiscount",
                         data: "pageNo=" + pageNo + "&pageRows=4",
                         dataType: "JSON",
@@ -198,7 +199,7 @@
         <div class="inner-cont0">
             <div class="inner-cont1 w1200">
                 <div class="inner-cont2">
-                    <a href="${pageContext.request.contextPath}/animal/queryAllAnimal" class="active">所有商品</a>
+                    <a href="commodity.jsp" class="active">所有商品</a>
                     <a href="buytoday.html">今日团购</a>
                     <a href="information.html">宠物资讯</a>
                     <a href="about.html">关于我们</a>

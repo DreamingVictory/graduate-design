@@ -67,4 +67,10 @@ public class AnimalServiceImpl implements AnimalService {
         }
         return list;
     }
+
+    @Override
+    public Integer totalCount() {
+        int count = animalMapper.selectCount(null);
+        return count;
+    }
 }

@@ -7,33 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("animal")
 public class AnimalController {
 
     @Autowired
     AnimalService service;
-
     @RequestMapping("queryAllAnimal")
-    public String queryAllAnimal(HttpSession session){
+    public List<Animal> queryAllAnimal(HttpSession session){
         List<Animal> animals = service.queryAllAnimal();
         session.setAttribute("list",animals);
-        return "forward:/html/commodity.jsp";
+        return animals;
     }
 
     @RequestMapping("queryAnimalsByCommend")
-    @ResponseBody
     public List<Animal> queryAnimalsByCommend(HttpSession session){
         List<Animal> animals = service.queryAnimalsByCommend();
         return animals;
     }
 
     @RequestMapping("queryByDiscount")
-    @ResponseBody
     public List<Animal> queryByDiscount(Integer pageNo,Integer pageRows) {
         PageHelper.startPage(pageNo,pageRows);
         List<Animal> animals = service.queryByDiscount();
@@ -41,9 +39,14 @@ public class AnimalController {
         return animals;
     }
     @RequestMapping("queryByCatDog")
-    @ResponseBody
     public List<Animal> queryByCatDog() {
         List<Animal> animals = service.queryByCatDog();
         return animals;
+    }
+    @RequestMapping("totalCount")
+    public Integer totalCount() {
+        Integer count = service.totalCount();
+        return count;
+
     }
 }

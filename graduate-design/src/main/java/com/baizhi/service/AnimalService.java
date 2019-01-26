@@ -9,4 +9,5 @@ public interface AnimalService {
     public List<Animal> queryAnimalsByCommend();
     public List<Animal> queryByDiscount();
     public List<Animal> queryByCatDog();
+    public Integer totalCount();
 }
