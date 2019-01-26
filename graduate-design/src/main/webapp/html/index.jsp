@@ -48,6 +48,28 @@
                 //    }
                 //  })
 
+                /*轮播图*/
+                /*function $(idVlaue){
+                    return document.getElementById(idValue);
+                }
+                var id=window.setInterval(fun,1000);
+                var num=1;
+                function fun(){
+                    if(num==2){num=0;}
+                    num++;
+                    $("#banner").src="banner"+num+".jpg";
+                }
+                window.onload=function(){
+                    $("#banner").onmouseover=function () {
+                        window.clearInterval(id);
+                    }
+                    $("#banner").onmouseout=function(){
+                        id=window.setInterval(fun,1000);
+                    }
+                }*/
+
+
+
                 /*查询所有的分类*/
                 $.post(
                     "${pageContext.request.contextPath}/category/queryAllCategory",
@@ -100,7 +122,6 @@
 
                 for (var p = 0; p < 3; p++) {
                     /*今日必抢*/
-                    console.log(pageNo);
                     $.ajax({
                         url: "${pageContext.request.contextPath}/animal/queryByDiscount",
                         data: "pageNo=" + pageNo + "&pageRows=4",
@@ -119,8 +140,7 @@
                                 $("#lunbo" + pageNo).append(div);
 
                             }
-                            var button = $("<button id='lunboBtn' onclick='lunboMsg(" + pageNo + ")' class='layui-icon layui-carousel-arrow' lay-type='add'></button>");
-                            $("#test1").append(button);
+
                         }
                     })
                     pageNo++;
@@ -130,32 +150,6 @@
             });
         })
 
-        function lunboMsg(page) {
-            page = page + 1;
-            $("#lunbo" + page).empty();
-            $.ajax({
-                url: "${pageContext.request.contextPath}/animal/queryByDiscount",
-                data: "pageNo=" + page + "&pageRows=4",
-                dataType: "JSON",
-                async: false,
-                success: function (res) {
-                    for (var i = 0; i < res.length; i++) {
-                        var div = $("<div class=\"item\"></div>");
-                        var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
-                        var div2 = $("<div class=\"title\"></div>").text(res[i].title);
-                        var div3 = $("<div class=\"price\"></div>");
-                        var span = $("<span></span>").text("￥" + res[i].ciurPic);
-                        var del = $("<del></del>").text("￥" + res[i].oriPic);
-                        div3.append(span).append(del);
-                        div.append(a).append(div2).append(div3);
-                        $("#lunbo" + page).append(div);
-
-                    }
-                    var button = $("<button id='lunboBtn' onclick='lunboMsg(" + page + ")' class='layui-icon layui-carousel-arrow' lay-type='add'></button>");
-                    $("#test1").append(button);
-                }
-            })
-        }
 
 
     </script>
@@ -228,7 +222,7 @@
         </div>
         <div class="category-banner">
             <div class="w1200">
-                <img src="../res/static/img/banner1.jpg">
+                <img src="../res/static/img/banner1.jpg" id="banner"/>
             </div>
         </div>
     </div>
