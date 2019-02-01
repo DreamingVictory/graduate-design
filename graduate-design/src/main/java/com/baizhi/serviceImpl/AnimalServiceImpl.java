@@ -73,4 +73,45 @@ public class AnimalServiceImpl implements AnimalService {
         int count = animalMapper.selectCount(null);
         return count;
     }
+
+    @Override
+    public List<Animal> queryByWaterLand() {
+        List<Animal> animals = animalMapper.queryByWaterLand();
+        List<Animal> list=new ArrayList<>();
+        for (Animal animal : animals) {
+
+            list.add(animal);
+            if(list.size()==5){
+                break;
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Animal> queryByBirdFish() {
+        List<Animal> animals = animalMapper.queryByBirdFish();
+        List<Animal> list=new ArrayList<>();
+        for (Animal animal : animals) {
+
+            list.add(animal);
+            if(list.size()==5){
+                break;
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Animal queryOneById(Integer id) {
+        Animal animal = animalMapper.selectByPrimaryKey(id);
+        return animal;
+    }
+
+    @Override
+    /*销量*/
+    public List<Animal> queryByCount() {
+        List<Animal> animals = animalMapper.queryByCount();
+        return animals;
+    }
 }

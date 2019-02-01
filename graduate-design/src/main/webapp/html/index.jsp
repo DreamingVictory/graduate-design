@@ -118,7 +118,28 @@
                         }
                     }
                 );
+                /*水陆两栖生*/
+                $.post(
+                    "${pageContext.request.contextPath}/animal/queryByWaterLand",
+                    function(res){
+                        for(var i=0;i<res.length;i++){
+                            var a = $("<a href=\"javascript:;\"><img src='" + res[i].img + "'/></a>");
+                            $("#waterLandBox").append(a);
+                        }
+                    }
 
+                );
+                /*花鸟鱼虫*/
+                $.post(
+                    "${pageContext.request.contextPath}/animal/queryByBirdFish",
+                    function(res){
+                        for(var i=0;i<res.length;i++){
+                            var a = $("<a href=\"javascript:;\"><img src='" + res[i].img + "'/></a>");
+                            $("#birdFishBox").append(a);
+                        }
+                    }
+
+                );
 
                 for (var p = 0; p < 3; p++) {
                     /*今日必抢*/
@@ -131,7 +152,7 @@
                         success: function (res) {
                             for (var i = 0; i < res.length; i++) {
                                 var div = $("<div class=\"item\"></div>");
-                                var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
+                                var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='" + res[i].img + "'/></a>");
                                 var div2 = $("<div class=\"title\"></div>").text(res[i].title);
                                 var div3 = $("<div class=\"price\"></div>");
                                 var span = $("<span></span>").text("￥" + res[i].ciurPic);
@@ -305,12 +326,8 @@
             </div>
             <div class="right-cont">
                 <a href="javascript:;" class="top-img"><img src="../res/static/img/img12.jpg" alt=""></a>
-                <div class="img-box">
-                    <a href="javascript:;"><img src="../res/static/img/s_img7.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img8.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img9.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img10.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img11.jpg"></a>
+                <div class="img-box" id="waterLandBox">
+
                 </div>
             </div>
         </div>
@@ -322,12 +339,8 @@
             </div>
             <div class="right-cont">
                 <a href="javascript:;" class="top-img"><img src="../res/static/img/img12.jpg" alt=""></a>
-                <div class="img-box">
-                    <a href="javascript:;"><img src="../res/static/img/s_img7.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img8.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img9.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img10.jpg"></a>
-                    <a href="javascript:;"><img src="../res/static/img/s_img11.jpg"></a>
+                <div class="img-box" id="birdFishBox">
+
                 </div>
             </div>
         </div>

@@ -10,5 +10,14 @@
     <select id="queryByCatDog" resultType="Animal">
         select id,img,title from animal where category_id in (select category_id from category  where parent_id in (1,2))
     </select>
+    <select id="queryByWaterLand" resultType="Animal">
+        select id,img,title from animal where category_id in (select category_id from category  where parent_id =5)
+    </select>
+    <select id="queryByBirdFish" resultType="Animal">
+        select id,img,title from animal where category_id in (select category_id from category  where parent_id in (3,4))
+    </select>
+    <select id="queryByCount" resultType="Animal">
+        select id,img,title from animal order by count desc
+    </select>
 
 </mapper>
