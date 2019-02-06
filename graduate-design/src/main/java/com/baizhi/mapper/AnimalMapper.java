@@ -11,5 +11,5 @@ public interface AnimalMapper extends Mapper<Animal> {
     public List<Animal> queryByCatDog();
     public List<Animal> queryByWaterLand();
     public List<Animal> queryByBirdFish();
-    public List<Animal> queryByCount();
+    public List<Animal> queryByCount();/*热销推荐*/
 }

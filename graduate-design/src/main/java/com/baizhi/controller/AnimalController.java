@@ -72,6 +72,7 @@ public class AnimalController {
         return "forward:/html/details.jsp";
     }
     @RequestMapping("queryByCount")
+    @ResponseBody
     public List<Animal> queryByCount() {
         List<Animal> animals = service.queryByCount();
         return animals;

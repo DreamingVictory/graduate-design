@@ -53,7 +53,32 @@
                   "position":"absolute"
               })
           });
+
+
+
+          /*热销推荐*/
+          $.post(
+              "${pageContext.request.contextPath}/animal/queryByCount",
+              function (res) {
+                for(var i=0;i<res.length;i++){
+                    console.log(res[i].ciurPic)
+                    var div=$("<div class=\"item\"></div>");
+                    var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='" + res[i].img + "'/></a>");
+                    var p=$("<p><span>"+res[i].title+"</span><span style='margin-left: 60px;color: palevioletred' class='pric'>￥"+res[i].ciurPic+"</span></p>");
+                    $("#countAnimal").append(div).append(a).append(p);
+                }
+              }
+          );
       });
+      function add(id){
+        $.post(
+            "${pageContext.request.contextPath}/cart/addCart",
+            "id="+id,
+            function(){
+
+            }
+        );
+      }
 
 
 
@@ -142,7 +167,7 @@
               </div>
               <div class="choose-btns">
                 <button class="layui-btn layui-btn-primary purchase-btn">立刻购买</button>
-                <button class="layui-btn  layui-btn-danger car-btn"><i class="layui-icon layui-icon-cart-simple"></i>加入购物车</button>
+                <button class="layui-btn  layui-btn-danger car-btn" onclick=add("${sessionScope.details.id}")><i class="layui-icon layui-icon-cart-simple"></i>加入购物车</button>
               </div>
             </div>
           </div>
@@ -155,8 +180,8 @@
       <div class="layui-clear">
         <div class="aside">
           <h4>热销推荐</h4>
-          <div class="item-list">
-            <div class="item">
+          <div class="item-list" id="countAnimal">
+            <%--<div class="item">
               <img src="../res/static/img/details_img2.jpg">
               <p><span>可爱宝宝粉色连体秋裤</span><span class="pric">￥99.00</span></p>
             </div>
@@ -179,7 +204,7 @@
             <div class="item">
               <img src="../res/static/img/details_img2.jpg">
               <p><span>可爱宝宝粉色连体秋裤</span><span class="pric">￥99.00</span></p>
-            </div>
+            </div>--%>
           </div>
         </div>
         <div class="detail">

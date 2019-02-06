@@ -16,6 +16,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.ServletContext;
 import java.util.List;
 
 public class MyRealm extends AuthorizingRealm {
@@ -59,8 +60,6 @@ public class MyRealm extends AuthorizingRealm {
         if (user1 != null) {//认证器
             authenticationInfo = new SimpleAuthenticationInfo(user1.getPhone(), user1.getPassword(), ByteSource.Util.bytes(user1.getSalt()), this.getName());
         }
-
-
         return authenticationInfo;
     }
 }

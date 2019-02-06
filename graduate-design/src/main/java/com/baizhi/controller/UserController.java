@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     UserService service;
+
     @RequestMapping("obtain")
     @ResponseBody
     public void obtain(String phone) {

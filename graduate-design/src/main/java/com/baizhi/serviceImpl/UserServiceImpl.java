@@ -128,6 +128,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void login(String phone, String password,String vcode, HttpSession session) {
         String validateImage = (String) session.getAttribute("validateImage");
+
         if (!validateImage.equalsIgnoreCase(vcode)) {
             throw new RuntimeException("验证码错误...");
         }

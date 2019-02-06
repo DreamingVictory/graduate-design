@@ -83,8 +83,8 @@
                             var dl = $("<dl></dl>");
                             var dt = $("<dt>" + res[i].categoryName + "</dt>");
                             dl.append(dt);
-                            for (var j = 0; j < res[i].categoryList.length; j++) {
-                                var dd = $("<dd><a href=\"javascript:;\">" + res[i].categoryList[j].categoryName + "</a></dd>");
+                            for (var j = 0; j < res[i].children.length; j++) {
+                                var dd = $("<dd><a href=\"javascript:;\">" + res[i].children[j].categoryName + "</a></dd>");
                                 dl.append(dd);
                             }
                             $("#categoryAll").append(dl);

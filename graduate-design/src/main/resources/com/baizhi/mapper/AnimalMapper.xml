@@ -17,7 +17,7 @@
         select id,img,title from animal where category_id in (select category_id from category  where parent_id in (3,4))
     </select>
     <select id="queryByCount" resultType="Animal">
-        select id,img,title from animal order by count desc
+        select id,img,title,ciur_pic ciurPic from animal order by count desc
     </select>
 
 </mapper>

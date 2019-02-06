@@ -7,7 +7,7 @@
         <id column="fid" property="categoryId"/>
         <result column="fname" property="categoryName"/>
         <result column="fpid" property="parentId"/>
-        <collection property="categoryList" ofType="Category">
+        <collection property="children" ofType="Category">
             <id column="sid" property="categoryId"/>
             <result column="sname" property="categoryName"/>
             <result column="spid" property="parentId"/>

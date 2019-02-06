@@ -21,8 +21,8 @@ public class Animal implements Serializable {
     private Integer id;
     private String img;
     private String title;
-    private String ciurPic;
-    private String oriPic;
+    private Double ciurPic;
+    private Double oriPic;
     private String discount;
     private Integer count;
     private Integer categoryId;

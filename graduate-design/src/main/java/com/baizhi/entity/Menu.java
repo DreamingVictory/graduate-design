@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.List;
@@ -13,13 +12,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "category")
-public class Category implements Serializable {
+public class Menu implements Serializable {
     @Id
-    private Integer categoryId;
-    private String categoryName;
+    private Integer id;
+    private String title;
+    private String iconcls;
+    private String url;
     private Integer parentId;
-
     @Transient
-    private List<Category> children;
+    private List<Menu> list;
+
 }
