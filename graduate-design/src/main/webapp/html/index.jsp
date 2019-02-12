@@ -77,10 +77,10 @@
                         for (var i = 0; i < res.length; i++) {
                             var li = $("<li class=\"nav-item\"></li>");
                             if (res[i].parentId == null) {
-                                var div = $("<div class='title'>" + res[i].categoryName + "</div>");
+                                var div = $("<div class='title'>" + res[i].title + "</div>");
                                 var p = $("<p></p>");
                                 for (var j = 0; j < res[i].children.length; j++) {
-                                    var a = $("<a href='#'>" + res[i].children[j].categoryName + "</a>");
+                                    var a = $("<a href='#'>" + res[i].children[j].title + "</a>");
                                     var ss = $("<i class='layui-icon layui-icon-right'></i>");
                                     p.append(a).append(ss);
                                 }

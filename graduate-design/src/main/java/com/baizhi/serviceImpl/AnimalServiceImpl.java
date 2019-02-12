@@ -1,12 +1,19 @@
 package com.baizhi.serviceImpl;
 
+import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Animal;
+import com.baizhi.lucene.LuceneDao;
 import com.baizhi.mapper.AnimalMapper;
 import com.baizhi.service.AnimalService;
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -14,12 +21,22 @@ import java.util.List;
 public class AnimalServiceImpl implements AnimalService {
     @Autowired
     AnimalMapper animalMapper;
+    @Autowired
+    private FastFileStorageClient fastFileStorageClient;
+    @Autowired
+    LuceneDao luceneDao;
 
-    @Override
-    public List<Animal> queryAllAnimal() {
+
+   @Override
+    public PageBeanDto<Animal> queryAllAnimal(Integer pageNo, Integer pageRows) {
         List<Animal> animals = animalMapper.selectAll();
-        return animals;
+        int count = animalMapper.selectCount(null);
+        PageBeanDto<Animal> pageBeanDto=new PageBeanDto<>();
+        pageBeanDto.setRows(animals);
+        pageBeanDto.setTotal(count);
+        return pageBeanDto;
     }
+
 
     @Override
     public List<Animal> queryAnimalsByCommend() {
@@ -112,6 +129,30 @@ public class AnimalServiceImpl implements AnimalService {
     /*销量*/
     public List<Animal> queryByCount() {
         List<Animal> animals = animalMapper.queryByCount();
+        return animals;
+    }
+
+    @Override
+    public void insertAnimal(Animal animal, MultipartFile file) {
+        try {
+            StorePath storePath = fastFileStorageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()), null);
+            String fullPath = storePath.getFullPath();
+            animal.setImg(fullPath);
+            animalMapper.insertSelective(animal);
+            luceneDao.createIndexToAnimal(animal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateAnimal(Animal animal) {
+        animalMapper.updateByPrimaryKey(animal);
+    }
+
+    @Override
+    public List<Animal> queryAllLucene(String params) {
+        List<Animal> animals = luceneDao.queryAllLucene(params);
         return animals;
     }
 }

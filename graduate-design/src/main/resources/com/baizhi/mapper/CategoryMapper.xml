@@ -4,18 +4,18 @@
 
 
     <resultMap id="rm1" type="Category">
-        <id column="fid" property="categoryId"/>
-        <result column="fname" property="categoryName"/>
+        <id column="fid" property="id"/>
+        <result column="fname" property="title"/>
         <result column="fpid" property="parentId"/>
         <collection property="children" ofType="Category">
-            <id column="sid" property="categoryId"/>
-            <result column="sname" property="categoryName"/>
+            <id column="sid" property="id"/>
+            <result column="sname" property="title"/>
             <result column="spid" property="parentId"/>
         </collection>
     </resultMap>
     <select id="queryAllCategory" resultMap="rm1">
-        select f.category_id fid,f.category_name fname,f.parent_id fpid,s.category_id sid,s.category_name sname,s.parent_id spid
-        from category f join category s on f.category_id=s.parent_id
+        select f.id fid,f.title fname,f.parent_id fpid,s.id sid,s.title sname,s.parent_id spid
+        from category f join category s on f.id=s.parent_id
     </select>
 
 

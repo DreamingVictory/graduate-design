@@ -1,5 +1,6 @@
 package com.baizhi.serviceImpl;
 
+import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Category;
 import com.baizhi.mapper.CategoryMapper;
 import com.baizhi.service.CategoryService;
@@ -22,5 +23,20 @@ public class CategoryServiceImpl implements CategoryService {
             throw new RuntimeException("类别还没有添加，请添加后查询");
         }
         return categories;
+    }
+
+    @Override
+    public PageBeanDto<Category> queryAllCategory(Integer page, Integer rows) {
+        List<Category> categories = categoryMapper.queryAllCategory();
+        int count = categoryMapper.selectCount(null);
+        PageBeanDto<Category> pageBeanDto=new PageBeanDto<>();
+        pageBeanDto.setTotal(count);
+        pageBeanDto.setRows(categories);
+        return pageBeanDto;
+    }
+
+    @Override
+    public void insertCategory(Category category) {
+        categoryMapper.insert(category);
     }
 }

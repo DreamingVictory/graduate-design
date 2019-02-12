@@ -16,8 +16,8 @@ import java.util.List;
 @Table(name = "category")
 public class Category implements Serializable {
     @Id
-    private Integer categoryId;
-    private String categoryName;
+    private Integer id;
+    private String title;
     private Integer parentId;
 
     @Transient

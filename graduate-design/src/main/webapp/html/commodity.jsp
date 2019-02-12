@@ -81,10 +81,10 @@
                     success:function (res) {
                         for (var i = 0; i < res.length; i++) {
                             var dl = $("<dl></dl>");
-                            var dt = $("<dt>" + res[i].categoryName + "</dt>");
+                            var dt = $("<dt>" + res[i].title + "</dt>");
                             dl.append(dt);
                             for (var j = 0; j < res[i].children.length; j++) {
-                                var dd = $("<dd><a href=\"javascript:;\">" + res[i].children[j].categoryName + "</a></dd>");
+                                var dd = $("<dd><a href=\"javascript:;\">" + res[i].children[j].title + "</a></dd>");
                                 dl.append(dd);
                             }
                             $("#categoryAll").append(dl);

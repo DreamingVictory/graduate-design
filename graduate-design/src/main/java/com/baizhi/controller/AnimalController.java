@@ -1,6 +1,8 @@
 package com.baizhi.controller;
 
+import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Animal;
+import com.baizhi.entity.Category;
 import com.baizhi.service.AnimalService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -20,10 +23,11 @@ public class AnimalController {
     AnimalService service;
     @RequestMapping("queryAllAnimal")
     @ResponseBody
-    public List<Animal> queryAllAnimal(HttpSession session){
-        List<Animal> animals = service.queryAllAnimal();
-        session.setAttribute("list",animals);
-        return animals;
+    public PageBeanDto<Animal> queryAllAnimal(Integer page, Integer rows) {
+        PageHelper.startPage(page,rows);
+        PageBeanDto<Animal> pageBeanDto = service.queryAllAnimal(page, rows);
+        return pageBeanDto;
+
     }
 
     @RequestMapping("queryAnimalsByCommend")
@@ -75,6 +79,25 @@ public class AnimalController {
     @ResponseBody
     public List<Animal> queryByCount() {
         List<Animal> animals = service.queryByCount();
+        return animals;
+    }
+
+    @RequestMapping("insertAnimal")
+    @ResponseBody
+    public void insertAnimal(Animal animal, MultipartFile file){
+        animal.setCount(0);
+        service.insertAnimal(animal,file);
+    }
+
+    @RequestMapping("updateAnimal")
+    @ResponseBody
+    public void updateAnimal(Animal animal){
+        service.updateAnimal(animal);
+    }
+    @RequestMapping("queryAllLucene")
+    @ResponseBody
+    public List<Animal> queryAllLucene(String params) {
+        List<Animal> animals = service.queryAllLucene(params);
         return animals;
     }
 }
