@@ -63,7 +63,7 @@
                 for(var i=0;i<res.length;i++){
                     console.log(res[i].ciurPic)
                     var div=$("<div class=\"item\"></div>");
-                    var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='" + res[i].img + "'/></a>");
+                    var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                     var p=$("<p><span>"+res[i].title+"</span><span style='margin-left: 60px;color: palevioletred' class='pric'>￥"+res[i].ciurPic+"</span></p>");
                     $("#countAnimal").append(div).append(a).append(p);
                 }
@@ -148,7 +148,7 @@
       </div>
       <div class="product-intro layui-clear">
           <div class="preview-wrap">
-            <a href="javascript:;"><img class="image" style="width: 300px;height: 300px;margin: 50px auto" src="${sessionScope.details.img}"></a>
+            <a href="javascript:;"><img class="image" style="width: 300px;height: 300px;margin: 50px auto" src="http://192.168.46.138/${sessionScope.details.img}"></a>
           </div>
           <div class="itemInfo-wrap">
             <div class="itemInfo">

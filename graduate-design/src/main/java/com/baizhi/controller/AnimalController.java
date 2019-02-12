@@ -96,8 +96,24 @@ public class AnimalController {
     }
     @RequestMapping("queryAllLucene")
     @ResponseBody
-    public List<Animal> queryAllLucene(String params) {
+    public List<Animal> queryAllLucene(String params,HttpSession session) {
         List<Animal> animals = service.queryAllLucene(params);
+        session.setAttribute("animals",animals);
         return animals;
     }
+
+    @RequestMapping("queryAnimals")
+    public String queryAnimals(Integer id, HttpSession session){
+        List<Animal> animals = service.queryAnimals(id, session);
+        return "forward:/html/commodity.jsp";
+    }
+
+    @RequestMapping("queryMoreAnimals")
+    public String queryMoreAnimals(HttpSession session) {
+        List<Animal> animals = service.queryMoreAnimals();
+        session.setAttribute("animals",animals);
+        return "forward:/html/commodity.jsp";
+    }
+
+
 }

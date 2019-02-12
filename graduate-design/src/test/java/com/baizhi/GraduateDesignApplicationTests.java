@@ -7,6 +7,8 @@ import com.baizhi.lucene.LuceneDaoImpl;
 import com.baizhi.mapper.AnimalMapper;
 import com.baizhi.service.AnimalService;
 import com.baizhi.service.CategoryService;
+import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.junit.Test;
@@ -20,6 +22,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -38,6 +43,8 @@ public class GraduateDesignApplicationTests {
     LuceneDaoImpl luceneDaoImpl;
     @Autowired
     AnimalMapper animalMapper;
+    @Autowired
+    FastFileStorageClient fastFileStorageClient;
 
     @Test
     public void test(){
@@ -115,6 +122,16 @@ public class GraduateDesignApplicationTests {
             System.out.println(animal);
         }
 
+    }
+    @Test
+    public void test6() throws FileNotFoundException {
+        List<Animal> animals = animalMapper.selectAll();
+        for (Animal animal : animals) {
+            File file = new File("E:/Code/resource/graduate-design/graduate-design/src/main/webapp"+animal.getImg());
+            StorePath storePath = fastFileStorageClient.uploadFile(new FileInputStream(file), file.length(), "jpg", null);
+            animal.setImg(storePath.getFullPath());
+            animalMapper.updateByPrimaryKeySelective(animal);
+        }
     }
 
 

@@ -80,7 +80,7 @@
                                 var div = $("<div class='title'>" + res[i].title + "</div>");
                                 var p = $("<p></p>");
                                 for (var j = 0; j < res[i].children.length; j++) {
-                                    var a = $("<a href='#'>" + res[i].children[j].title + "</a>");
+                                    var a = $("<a href='${pageContext.request.contextPath}/animal/queryAnimals?id="+res[i].children[j].id+"'>" + res[i].children[j].title + "</a>");
                                     var ss = $("<i class='layui-icon layui-icon-right'></i>");
                                     p.append(a).append(ss);
                                 }
@@ -98,7 +98,7 @@
 
                         for (var i = 0; i < res.length; i++) {
                             var div = $("<div class=\"list-item\"></div>");
-                            var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
+                            var a = $("<a href='javascript:;'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             var p = $("<p style=\"margin-left: 50px\"></p>").text(res[i].title);
                             var span = $("<span></span>").text("￥" + res[i].ciurPic);
                             var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].oriPic);
@@ -113,7 +113,7 @@
                     "${pageContext.request.contextPath}/animal/queryByCatDog",
                     function (res) {
                         for (var i = 0; i < res.length; i++) {
-                            var a = $("<a href=\"javascript:;\"><img src='" + res[i].img + "'/></a>");
+                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#catDogBox").append(a);
                         }
                     }
@@ -123,7 +123,7 @@
                     "${pageContext.request.contextPath}/animal/queryByWaterLand",
                     function(res){
                         for(var i=0;i<res.length;i++){
-                            var a = $("<a href=\"javascript:;\"><img src='" + res[i].img + "'/></a>");
+                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#waterLandBox").append(a);
                         }
                     }
@@ -134,7 +134,7 @@
                     "${pageContext.request.contextPath}/animal/queryByBirdFish",
                     function(res){
                         for(var i=0;i<res.length;i++){
-                            var a = $("<a href=\"javascript:;\"><img src='" + res[i].img + "'/></a>");
+                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#birdFishBox").append(a);
                         }
                     }
@@ -152,7 +152,7 @@
                         success: function (res) {
                             for (var i = 0; i < res.length; i++) {
                                 var div = $("<div class=\"item\"></div>");
-                                var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='" + res[i].img + "'/></a>");
+                                var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                                 var div2 = $("<div class=\"title\"></div>").text(res[i].title);
                                 var div3 = $("<div class=\"price\"></div>");
                                 var span = $("<span></span>").text("￥" + res[i].ciurPic);
@@ -166,11 +166,23 @@
                     })
                     pageNo++;
                 }
-
-
             });
         })
 
+        function clickme(){
+            $.ajax({
+                type:"POST",
+                url:"${pageContext.request.contextPath}/animal/queryAllLucene",
+                data:"params="+$("#searchByLucene").val(),
+                dataType:"JSON",
+                async: false,
+                success:function(res){
+                    if(res!=null){
+                        location.href="${pageContext.request.contextPath}/html/commodity.jsp";
+                    }
+                }
+            });
+        }
 
 
     </script>
@@ -202,11 +214,11 @@
             </h1>
             <div class="mallSearch">
                 <form action="" class="layui-form" novalidate>
-                    <input type="text" name="title" required lay-verify="required" autocomplete="off"
+                    <input type="text" id="searchByLucene" name="title" required lay-verify="required" autocomplete="off"
                            class="layui-input" placeholder="请输入需要的商品">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">
-                        <i class="layui-icon layui-icon-search"></i>
-                    </button>
+                    <div class="layui-btn" lay-submit lay-filter="formDemo" onclick="clickme()">
+                        <i class="layui-icon layui-icon-search" ></i>
+                    </div>
                     <input type="hidden" name="" value="">
                 </form>
             </div>
@@ -220,7 +232,7 @@
         <div class="inner-cont0">
             <div class="inner-cont1 w1200">
                 <div class="inner-cont2">
-                    <a href="commodity.jsp" class="active">所有商品</a>
+                    <a href="${pageContext.request.contextPath}/animal/queryMoreAnimals " class="active">所有商品</a>
                     <a href="buytoday.html">今日团购</a>
                     <a href="information.html">宠物资讯</a>
                     <a href="about.html">关于我们</a>
@@ -378,7 +390,7 @@
             <span>|</span>
             <a href="javascript:;">关于货源</a>
         </p>
-        <p class="coty">母婴商城版权所有 &copy; 2012-2020 More Templates <a href="http://www.cssmoban.com/" target="_blank"
+        <p class="coty">宠物商城版权所有 &copy; 2012-2020 More Templates <a href="http://www.cssmoban.com/" target="_blank"
                                                                     title="模板之家">模板之家</a> - Collect from <a
                 href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
     </div>

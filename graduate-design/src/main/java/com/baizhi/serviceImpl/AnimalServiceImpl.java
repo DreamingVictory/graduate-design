@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,22 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public List<Animal> queryAllLucene(String params) {
         List<Animal> animals = luceneDao.queryAllLucene(params);
+        return animals;
+    }
+
+    @Override
+    public List<Animal> queryAnimals(Integer id, HttpSession session) {
+        Animal animal=new Animal();
+        animal.setCategoryId(id);
+        List<Animal> animals = animalMapper.select(animal);
+        session.setAttribute("animals",animals);
+
+        return animals;
+    }
+
+    @Override
+    public List<Animal> queryMoreAnimals() {
+        List<Animal> animals = animalMapper.selectAll();
         return animals;
     }
 }

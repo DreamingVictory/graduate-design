@@ -4,6 +4,7 @@ import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Animal;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface AnimalService {
@@ -22,4 +23,8 @@ public interface AnimalService {
     public void updateAnimal(Animal animal);
 
     public List<Animal> queryAllLucene(String params);
+    //点击二级标题查询相对数据
+    public List<Animal> queryAnimals(Integer id, HttpSession session);
+    //点击所有商品
+    public List<Animal> queryMoreAnimals();
 }

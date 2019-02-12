@@ -70,7 +70,7 @@
                                 var tr1 = $("<tr><td>ID：</td><td>" + res[i].id + "</td></tr>");
                                 var tr2 = $("<tr><td>标题：</td><td>" + res[i].title + "</td></tr>");
 
-                                var tr3 = $("<tr><td>插图：</td><td><img src='http://192.168.46.138/" + res[i].img + "'/></td></tr>");
+                                var tr3 = $("<tr><td>图片：</td><td><img src='http://192.168.46.138/" + res[i].img + "'/></td></tr>");
                                 var tr4 = $("<tr><td>描述：</td><td>" + res[i].description + "</td></tr>");
                                 var tr5 = $("<tr><td>上架日期：</td><td>" + res[i].pubDate + "</td></tr>");
                                 var hr = $("<tr><td colspan='2'><hr width='500px'></td></tr>");

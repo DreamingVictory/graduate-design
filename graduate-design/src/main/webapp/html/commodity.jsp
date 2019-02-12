@@ -44,27 +44,27 @@
 
 
             $(function () {
-                $.post(
-                    "${pageContext.request.contextPath}/animal/queryAllAnimal",
-                    function (res) {
+               <%--$.post(--%>
+                    <%--"${pageContext.request.contextPath}/animal/queryAllAnimal",--%>
+                    <%--function (res) {--%>
 
-                        for (var i = 0; i < res.length; i++) {
-                            var div1 = $("<div class=\"item\"></div>");
-                            var div2 = $("<div class=\"img\" style='margin: 50px 100px 50px 50px;'></div>");
-                            var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");
-                            div2.append(a);
-                            var div3 = $("<div class=\"text\"></div>");
-                            var p1 = $("<p class=\"title\" style='margin-left: 10px'>" + res[i].title + "</p>");
-                            var p2 = $("<p class=\"price\"></p>");
-                            var span1 = $("<span class=\"pri\" style='margin-left: 10px'>" + "￥" + res[i].ciurPic + "</span>");
-                            var span2 = $("<span class=\"nub\">" + res[i].count + "付款" + "</span>");
-                            p2.append(span1).append(span2);
-                            div3.append(p1).append(p2);
-                            div1.append(div2).append(div3);
-                            $("#list-cont").append(div1);
-                        }
-                    }
-                );
+                        <%--for (var i = 0; i < res.length; i++) {--%>
+                            <%--var div1 = $("<div class=\"item\"></div>");--%>
+                            <%--var div2 = $("<div class=\"img\" style='margin: 50px 100px 50px 50px;'></div>");--%>
+                            <%--var a = $("<a href='javascript:;'><img src='" + res[i].img + "'/></a>");--%>
+                            <%--div2.append(a);--%>
+                            <%--var div3 = $("<div class=\"text\"></div>");--%>
+                            <%--var p1 = $("<p class=\"title\" style='margin-left: 10px'>" + res[i].title + "</p>");--%>
+                            <%--var p2 = $("<p class=\"price\"></p>");--%>
+                            <%--var span1 = $("<span class=\"pri\" style='margin-left: 10px'>" + "￥" + res[i].ciurPic + "</span>");--%>
+                            <%--var span2 = $("<span class=\"nub\">" + res[i].count + "付款" + "</span>");--%>
+                            <%--p2.append(span1).append(span2);--%>
+                            <%--div3.append(p1).append(p2);--%>
+                            <%--div1.append(div2).append(div3);--%>
+                            <%--$("#list-cont").append(div1);--%>
+                        <%--}--%>
+                    <%--}--%>
+                <%--);--%>
 
                 $.post(
                     "${pageContext.request.contextPath}/animal/totalCount",
@@ -183,10 +183,10 @@
                         <span id="count" style="color: #9175ad;font-family: '微软雅黑', 'Microsoft Yahei'"></span>
                     </div>
                     <div class="cont-list layui-clear" id="list-cont">
-                        <%--  <c:forEach items="${sessionScope.list}" var="animal">
+                        <c:forEach items="${sessionScope.animals}" var="animal">
                             <div class="item">
                               <div class="img">
-                                <a href="javascript:;"><img src=${animal.img}></a>
+                                <a href="javascript:;"><img style="margin: 50px 100px 50px 50px" src=http://192.168.46.138/${animal.img} /></a>
                               </div>
                               <div class="text">
                                 <p class="title">${animal.title}</p>
@@ -196,7 +196,7 @@
                                 </p>
                               </div>
                             </div>
-                          </c:forEach>--%>
+                          </c:forEach>
 
                     </div>
                     <!-- 模版引擎导入 -->
