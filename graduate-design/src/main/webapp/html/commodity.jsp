@@ -66,12 +66,12 @@
                     <%--}--%>
                 <%--);--%>
 
-                $.post(
-                    "${pageContext.request.contextPath}/animal/totalCount",
-                    function (res) {
-                        $("#count").html("一共帮您找到了" + "<b>" + res + "</b>" + "个小动物");
-                    }
-                );
+                <%--$.post(--%>
+                    <%--"${pageContext.request.contextPath}/animal/totalCount",--%>
+                    <%--function (res) {--%>
+                        <%--$("#count").html("一共帮您找到了" + "<b>" + res + "</b>" + "个小动物");--%>
+                    <%--}--%>
+                <%--);--%>
 
                 $.ajax({
                     type:"POST",
@@ -84,7 +84,7 @@
                             var dt = $("<dt>" + res[i].title + "</dt>");
                             dl.append(dt);
                             for (var j = 0; j < res[i].children.length; j++) {
-                                var dd = $("<dd><a href=\"javascript:;\">" + res[i].children[j].title + "</a></dd>");
+                                var dd = $("<dd><a href='${pageContext.request.contextPath}/animal/queryAnimals?id="+res[i].children[j].id+"'>" + res[i].children[j].title + "</a></dd>");
                                 dl.append(dd);
                             }
                             $("#categoryAll").append(dl);
@@ -174,13 +174,15 @@
             <div class="right-cont-wrap">
                 <div class="right-cont">
                     <div class="sort layui-clear">
-                        <a class="active" href="javascript:;" event='volume'>销量</a>
+                        <a class="active" href="${pageContext.request.contextPath}/animal/orderBySaleCount" event='volume'>销量</a>
                         <a href="javascript:;" event='price'>价格</a>
                         <a href="javascript:;" event='newprod'>新品</a>
                         <a href="javascript:;" event='collection'>收藏</a>
                     </div>
                     <div class="prod-number">
-                        <span id="count" style="color: #9175ad;font-family: '微软雅黑', 'Microsoft Yahei'"></span>
+                        <span id="count" style="color: #9175ad;font-family: '微软雅黑', 'Microsoft Yahei'">
+                            <b>一共为您找到${sessionScope.count}只小动物</b>
+                        </span>
                     </div>
                     <div class="cont-list layui-clear" id="list-cont">
                         <c:forEach items="${sessionScope.animals}" var="animal">

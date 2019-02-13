@@ -97,8 +97,7 @@ public class AnimalController {
     @RequestMapping("queryAllLucene")
     @ResponseBody
     public List<Animal> queryAllLucene(String params,HttpSession session) {
-        List<Animal> animals = service.queryAllLucene(params);
-        session.setAttribute("animals",animals);
+        List<Animal> animals = service.queryAllLucene(params,session);
         return animals;
     }
 
@@ -110,10 +109,14 @@ public class AnimalController {
 
     @RequestMapping("queryMoreAnimals")
     public String queryMoreAnimals(HttpSession session) {
-        List<Animal> animals = service.queryMoreAnimals();
-        session.setAttribute("animals",animals);
+        List<Animal> animals = service.queryMoreAnimals(session);
         return "forward:/html/commodity.jsp";
     }
 
+    @RequestMapping("orderBySaleCount")
+    public String orderBySaleCount(HttpSession session){
+        List<Animal> animals = service.orderBySaleCount(session);
+        return "forward:/html/commodity.jsp";
+    }
 
 }

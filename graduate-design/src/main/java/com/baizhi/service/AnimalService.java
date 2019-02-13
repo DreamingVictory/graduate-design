@@ -22,9 +22,11 @@ public interface AnimalService {
     public void insertAnimal(Animal animal, MultipartFile file);
     public void updateAnimal(Animal animal);
 
-    public List<Animal> queryAllLucene(String params);
+    public List<Animal> queryAllLucene(String params,HttpSession session);
     //点击二级标题查询相对数据
     public List<Animal> queryAnimals(Integer id, HttpSession session);
     //点击所有商品
-    public List<Animal> queryMoreAnimals();
+    public List<Animal> queryMoreAnimals(HttpSession session);
+    //销量排序
+    public List<Animal> orderBySaleCount(HttpSession session);
 }

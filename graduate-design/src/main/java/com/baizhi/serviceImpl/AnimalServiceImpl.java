@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 @Service
 @Transactional
@@ -152,8 +154,11 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<Animal> queryAllLucene(String params) {
+    public List<Animal> queryAllLucene(String params,HttpSession session) {
         List<Animal> animals = luceneDao.queryAllLucene(params);
+        int count = animals.size();
+        session.setAttribute("animals",animals);
+        session.setAttribute("count",count);
         return animals;
     }
 
@@ -162,14 +167,43 @@ public class AnimalServiceImpl implements AnimalService {
         Animal animal=new Animal();
         animal.setCategoryId(id);
         List<Animal> animals = animalMapper.select(animal);
+        int count = animalMapper.selectCount(animal);
         session.setAttribute("animals",animals);
+        session.setAttribute("count",count);
 
         return animals;
     }
 
     @Override
-    public List<Animal> queryMoreAnimals() {
+    public List<Animal> queryMoreAnimals(HttpSession session) {
         List<Animal> animals = animalMapper.selectAll();
+        int count = animals.size();
+        session.setAttribute("animals",animals);
+        session.setAttribute("count",count);
         return animals;
+    }
+
+    @Override
+    public List<Animal> orderBySaleCount(HttpSession session) {
+        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
+        //得到每个动物的销量进行排序   默认降序
+
+        for (int i=0;i<animals.size();i++) {
+            Collections.sort(animals,new Comparator<Animal>(){
+
+
+                @Override
+                public int compare(Animal o1, Animal o2) {
+                    if(o1.getCount()>=o2.getCount()){
+                        return -1;
+                    }else{
+                        return 1;
+                    }
+
+                }
+            });
+        }
+        return animals;
+
     }
 }
