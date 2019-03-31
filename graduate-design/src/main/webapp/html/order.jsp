@@ -107,6 +107,10 @@
                 aaa = 0;
             });
         })
+
+        function submit() {
+            location.href="${pageContext.request.contextPath}/order/insertOrder?addressId="+$("#history").val();
+        }
     </script>
 </head>
 <body>
@@ -211,7 +215,7 @@
                 <p>应付：<span class="pieces-total">0</span></p>
             </div>
             <div class="th Settlement">
-                <button class="layui-btn"><a href="">提交订单</a></button>
+                <button class="layui-btn" onclick="submit()">提交订单</button>
             </div>
 
         </div>
