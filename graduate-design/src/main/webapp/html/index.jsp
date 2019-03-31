@@ -190,56 +190,11 @@
 
 </head>
 <body id="list-cont">
-<div class="site-nav-bg">
-    <div class="site-nav w1200">
-        <p class="sn-back-home">
-            <i class="layui-icon layui-icon-home"></i>
-            <a href="#">首页</a>
-        </p>
-        <div class="sn-quick-menu">
-            <div class="login"><a href="login.html">登录</a></div>
-            <div class="sp-cart"><a href="shopcart.html">购物车</a><span>2</span></div>
-        </div>
-    </div>
-</div>
 
-
-<div class="header">
-    <div class="headerLayout w1200">
-        <div class="headerCon">
-            <h1 class="mallLogo">
-                <a href="#" title="宠物商城">
-                    <img src="../res/static/img/logo.png">
-                </a>
-            </h1>
-            <div class="mallSearch">
-                <form action="" class="layui-form" novalidate>
-                    <input type="text" id="searchByLucene" name="title" required lay-verify="required" autocomplete="off"
-                           class="layui-input" placeholder="请输入需要的商品">
-                    <div class="layui-btn" lay-submit lay-filter="formDemo" onclick="clickme()">
-                        <i class="layui-icon layui-icon-search" ></i>
-                    </div>
-                    <input type="hidden" name="" value="">
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
+<%@include file="common/head.jsp"%>
 
 <div class="content">
-    <div class="main-nav">
-        <div class="inner-cont0">
-            <div class="inner-cont1 w1200">
-                <div class="inner-cont2">
-                    <a href="${pageContext.request.contextPath}/animal/queryMoreAnimals " class="active">所有商品</a>
-                    <a href="buytoday.html">今日团购</a>
-                    <a href="information.html">宠物资讯</a>
-                    <a href="about.html">关于我们</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <%@include file="common/middle.jsp"%>
     <div class="category-con">
         <div class="category-inner-con w1200">
             <div class="category-type">

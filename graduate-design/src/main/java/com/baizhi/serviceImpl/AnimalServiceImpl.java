@@ -206,4 +206,76 @@ public class AnimalServiceImpl implements AnimalService {
         return animals;
 
     }
+
+    @Override
+    public List<Animal> orderByPrice(HttpSession session) {
+        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
+        //得到每个动物的销量进行排序   默认降序
+
+        for (int i=0;i<animals.size();i++) {
+            Collections.sort(animals,new Comparator<Animal>(){
+
+
+                @Override
+                public int compare(Animal o1, Animal o2) {
+                    if(o1.getCiurPic()>=o2.getCiurPic()){
+                        return -1;
+                    }else{
+                        return 1;
+                    }
+
+                }
+            });
+        }
+        return animals;
+    }
+
+   /* @Override
+    public List<Animal> orderByDate(HttpSession session) {
+        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
+        //得到每个动物的销量进行排序   默认降序
+
+        for (int i=0;i<animals.size();i++) {
+            Collections.sort(animals,new Comparator<Animal>(){
+
+
+                @Override
+                public int compare(Animal o1, Animal o2) {
+                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat();
+                    String format1 = simpleDateFormat.format(o1.getPubDate());
+                    String format2 = simpleDateFormat.format(o2.getPubDate());
+                    if(Integer.valueOf(format1)>Integer.valueOf(format2)){
+                        return -1;
+                    }else{
+                        return 1;
+                    }
+
+                }
+            });
+        }
+        return animals;
+    }
+
+    @Override
+    public List<Animal> orderByDiscount(HttpSession session) {
+        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
+        //得到每个动物的销量进行排序   默认降序
+
+        for (int i=0;i<animals.size();i++) {
+            Collections.sort(animals,new Comparator<Animal>(){
+
+
+                @Override
+                public int compare(Animal o1, Animal o2) {
+                    if(Integer.valueOf(o1.getDiscount())>Integer.valueOf(o2.getDiscount())){
+                        return -1;
+                    }else{
+                        return 1;
+                    }
+
+                }
+            });
+        }
+        return animals;
+    }*/
 }

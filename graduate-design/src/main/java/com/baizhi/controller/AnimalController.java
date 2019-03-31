@@ -118,5 +118,11 @@ public class AnimalController {
         List<Animal> animals = service.orderBySaleCount(session);
         return "forward:/html/commodity.jsp";
     }
+    @RequestMapping("orderByPrice")
+    public String orderByPrice(HttpSession session){
+        List<Animal> animals = service.orderByPrice(session);
+        return "forward:/html/commodity.jsp";
+    }
+
 
 }

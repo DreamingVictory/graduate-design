@@ -29,4 +29,10 @@ public interface AnimalService {
     public List<Animal> queryMoreAnimals(HttpSession session);
     //销量排序
     public List<Animal> orderBySaleCount(HttpSession session);
+    //价格排序
+    public List<Animal> orderByPrice(HttpSession session);
+   /* //新品排序
+    public List<Animal> orderByDate(HttpSession session);
+    //折扣排序
+    public List<Animal> orderByDiscount(HttpSession session);*/
 }

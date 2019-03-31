@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void regist(User user,String code, String phone) {
         ValueOperations<String, String> strops = redisTemplate.opsForValue();
-        String validate = strops.get(phone);
+        String validate = (String) strops.get(phone);
         if (validate != null) {
             if (validate.equals(code)) {
                 String salt = RandomSaltUtil.generetRandomSaltCode();

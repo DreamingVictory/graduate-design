@@ -40,10 +40,10 @@ public class UserController {
         }
     }
     @RequestMapping("logoutUser")
-    @ResponseBody
-    public void logoutUser() {
+    public String logoutUser() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
+        return "redirect:/html/index.jsp";
     }
 
 }
