@@ -2,12 +2,16 @@ package com.baizhi.serviceImpl;
 
 import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Animal;
+import com.baizhi.entity.Category;
 import com.baizhi.lucene.LuceneDao;
 import com.baizhi.mapper.AnimalMapper;
+import com.baizhi.mapper.CategoryMapper;
 import com.baizhi.service.AnimalService;
+import com.github.pagehelper.PageHelper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,16 +32,54 @@ public class AnimalServiceImpl implements AnimalService {
     private FastFileStorageClient fastFileStorageClient;
     @Autowired
     LuceneDao luceneDao;
-
+    @Autowired
+    CategoryMapper categoryMapper;
 
    @Override
-    public PageBeanDto<Animal> queryAllAnimal(Integer pageNo, Integer pageRows) {
+    public PageBeanDto<Animal> queryAllAnimal() {
         List<Animal> animals = animalMapper.selectAll();
         int count = animalMapper.selectCount(null);
         PageBeanDto<Animal> pageBeanDto=new PageBeanDto<>();
         pageBeanDto.setRows(animals);
         pageBeanDto.setTotal(count);
         return pageBeanDto;
+    }
+
+    @Override
+    public List<Animal> queryAllAnimls(Integer id,HttpSession session){
+        if(id!=null){
+            Category category = categoryMapper.selectByPrimaryKey(id);
+            if(StringUtils.isNotBlank(category.getParentId().toString())){
+                Animal animal=new Animal();
+                animal.setCategoryId(id);
+                List<Animal> animalList = animalMapper.select(animal);
+                if(!animalList.isEmpty()) {
+                    session.setAttribute("totlaPage",animalList.size());
+                    return animalList;
+                }
+                else{
+                    session.setAttribute("totlaPage",0);
+                    return Collections.EMPTY_LIST;
+                }
+            }else{
+                List<Animal> animals = animalMapper.queryFirstAnimal(id);
+                if(!animals.isEmpty()) {
+                    session.setAttribute("totlaPage",animals.size());
+                    return animals;
+                }
+                else {
+                    session.setAttribute("totlaPage",0);
+                    return Collections.EMPTY_LIST;
+                }
+            }
+        }
+        List<Animal> animals = animalMapper.selectAll();
+        if(animals.isEmpty()) {
+            session.setAttribute("totlaPage",0);
+            return Collections.EMPTY_LIST;
+        }
+        session.setAttribute("totlaPage",animals.size());
+        return animals;
     }
 
 
@@ -135,6 +177,9 @@ public class AnimalServiceImpl implements AnimalService {
         return animals;
     }
 
+
+
+
     @Override
     public void insertAnimal(Animal animal, MultipartFile file) {
         try {
@@ -163,14 +208,26 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<Animal> queryAnimals(Integer id, HttpSession session) {
+    public List<Animal> queryFirstAnimals(Integer id,HttpSession session){
         Animal animal=new Animal();
         animal.setCategoryId(id);
-        List<Animal> animals = animalMapper.select(animal);
+        List<Animal> animals = animalMapper.queryFirstAnimal(id);
         int count = animalMapper.selectCount(animal);
         session.setAttribute("animals",animals);
         session.setAttribute("count",count);
 
+        return animals;
+    }
+
+    @Override
+    public List<Animal> queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows) {
+        Animal animal=new Animal();
+        animal.setCategoryId(id);
+        int count = animalMapper.selectCount(animal);
+        session.setAttribute("count",count);
+        PageHelper.startPage(pageNo,pageRows);
+        List<Animal> animals = animalMapper.select(animal);
+        session.setAttribute("animals",animals);
         return animals;
     }
 

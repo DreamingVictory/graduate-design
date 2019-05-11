@@ -193,7 +193,7 @@
                             </div>
                         </li>
                         <li class="th th-price">
-                            <span class="th-su">${aniaml.animal.ciurPic}hhh</span>
+                            <span class="th-su">${aniaml.animal.ciurPic}9000</span>
                         </li>
                         <li class="th th-amount">
                             <div class="box-btn layui-clear">
@@ -212,7 +212,7 @@
 
         <div class="FloatBarHolder layui-clear">
             <div class="th total">
-                <p>应付：<span class="pieces-total">0</span></p>
+                <p>应付：<span class="pieces-total">${sessionScope.totalPrice}</span></p>
             </div>
             <div class="th Settlement">
                 <button class="layui-btn" onclick="submit()">提交订单</button>

@@ -80,12 +80,14 @@ public class CartServiceImpl implements CartService {
         }
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         List<CartItem> animals=new ArrayList<>();
-
+        Double totalPrice=0.0;
         Set<Integer> integers = map.keySet();
         for (Integer integer : integers) {
             animals.add(map.get(integer));
+            totalPrice+=map.get(integer).getTotalPrice();
         }
         session.setAttribute("cartitem",animals);
+        session.setAttribute("totalPrice",totalPrice);
         return "ok";
     }
 }

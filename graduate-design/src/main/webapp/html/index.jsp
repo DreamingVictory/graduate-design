@@ -69,7 +69,6 @@
                 }*/
 
 
-
                 /*查询所有的分类*/
                 $.post(
                     "${pageContext.request.contextPath}/category/queryAllCategory",
@@ -77,10 +76,10 @@
                         for (var i = 0; i < res.length; i++) {
                             var li = $("<li class=\"nav-item\"></li>");
                             if (res[i].parentId == null) {
-                                var div = $("<div class='title'>" + res[i].title + "</div>");
+                                var div = $("<div class='title'><a href='${pageContext.request.contextPath}/html/commodity.jsp?pageNo=1&pageRows=9&id="+res[i].id+"'>" + res[i].title + "</a></div>");
                                 var p = $("<p></p>");
                                 for (var j = 0; j < res[i].children.length; j++) {
-                                    var a = $("<a href='${pageContext.request.contextPath}/animal/queryAnimals?id="+res[i].children[j].id+"'>" + res[i].children[j].title + "</a>");
+                                    var a = $("<a href='${pageContext.request.contextPath}/html/commodity.jsp?pageNo=1&pageRows=9&id="+res[i].children[j].id+"'>" + res[i].children[j].title + "</a>");
                                     var ss = $("<i class='layui-icon layui-icon-right'></i>");
                                     p.append(a).append(ss);
                                 }
@@ -88,17 +87,15 @@
                             }
                             $("#categoryUl").append(li);
                         }
-
                     }
                 );
                 /*更多推荐*/
                 $.post(
                     "${pageContext.request.contextPath}/animal/queryAnimalsByCommend",
                     function (res) {
-
                         for (var i = 0; i < res.length; i++) {
                             var div = $("<div class=\"list-item\"></div>");
-                            var a = $("<a href='javascript:;'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
+                            var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             var p = $("<p style=\"margin-left: 50px\"></p>").text(res[i].title);
                             var span = $("<span></span>").text("￥" + res[i].ciurPic);
                             var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].oriPic);
@@ -113,7 +110,7 @@
                     "${pageContext.request.contextPath}/animal/queryByCatDog",
                     function (res) {
                         for (var i = 0; i < res.length; i++) {
-                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
+                            var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#catDogBox").append(a);
                         }
                     }
@@ -123,7 +120,7 @@
                     "${pageContext.request.contextPath}/animal/queryByWaterLand",
                     function(res){
                         for(var i=0;i<res.length;i++){
-                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
+                            var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#waterLandBox").append(a);
                         }
                     }
@@ -134,7 +131,7 @@
                     "${pageContext.request.contextPath}/animal/queryByBirdFish",
                     function(res){
                         for(var i=0;i<res.length;i++){
-                            var a = $("<a href=\"javascript:;\"><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
+                            var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             $("#birdFishBox").append(a);
                         }
                     }
@@ -341,12 +338,12 @@
             <span>|</span>
             <a href="javascript:;">售后服务</a>
             <span>|</span>
-            <a href="javascript:;">母婴资讯</a>
+            <a href="javascript:;">宠物资讯</a>
             <span>|</span>
             <a href="javascript:;">关于货源</a>
         </p>
         <p class="coty">宠物商城版权所有 &copy; 2012-2020 More Templates <a href="http://www.cssmoban.com/" target="_blank"
-                                                                    title="模板之家">模板之家</a> - Collect from <a
+                                                                    title="宠物之家">宠物之家</a> - Collect from <a
                 href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
     </div>
 </div>

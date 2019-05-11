@@ -69,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
             orderitem.setTotalPrice(cartItem.getTotalPrice());
             orderitemMapper.insert(orderitem);
         }
-        System.out.println(order.getOrderId()+"jjjjjjjjjjjjjjj");
         //通过订单id查一个  显示订单成功界面
         Order order1 = orderMapper.selectByPrimaryKey(order.getOrderId());
         session.setAttribute("order1", order1);

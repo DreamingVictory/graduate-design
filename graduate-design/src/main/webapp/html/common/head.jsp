@@ -13,9 +13,10 @@
             </shiro:authenticated>
             <shiro:notAuthenticated>
                 <div class="login"><a href="login.jsp">登录</a></div>
+                <div class="login"><a href="regist.jsp">注册</a></div>
             </shiro:notAuthenticated>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="sp-cart"><a href="${pageContext.request.contextPath}/cart/getCart">购物车</a><span>2</span></div>
+            <div class="sp-cart"><a href="${pageContext.request.contextPath}/cart/getCart">购物车</a></div>
         </div>
     </div>
 </div>

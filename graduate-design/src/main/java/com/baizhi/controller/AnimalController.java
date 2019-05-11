@@ -2,14 +2,12 @@ package com.baizhi.controller;
 
 import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Animal;
-import com.baizhi.entity.Category;
 import com.baizhi.service.AnimalService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -25,9 +23,8 @@ public class AnimalController {
     @ResponseBody
     public PageBeanDto<Animal> queryAllAnimal(Integer page, Integer rows) {
         PageHelper.startPage(page,rows);
-        PageBeanDto<Animal> pageBeanDto = service.queryAllAnimal(page, rows);
+        PageBeanDto<Animal> pageBeanDto = service.queryAllAnimal();
         return pageBeanDto;
-
     }
 
     @RequestMapping("queryAnimalsByCommend")
@@ -102,8 +99,23 @@ public class AnimalController {
     }
 
     @RequestMapping("queryAnimals")
-    public String queryAnimals(Integer id, HttpSession session){
-        List<Animal> animals = service.queryAnimals(id, session);
+    public String queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows){
+        List<Animal> animals = service.queryAnimals(id, session,pageNo,pageRows);
+        return "forward:/html/commodity.jsp";
+    }
+
+    @ResponseBody
+    @RequestMapping("animals")
+    public List<Animal> queryAllAnimals(Integer id,HttpSession session,Integer page,Integer rows){
+        PageHelper.startPage(page,rows);
+        List<Animal> animals = service.queryAllAnimls(id, session);
+        return animals;
+    }
+
+    @RequestMapping("queryFirstAnimals")
+    public String queryFirstAnimals(Integer id, HttpSession session){
+        List<Animal> animals = service.queryFirstAnimals(id, session);
+        System.out.println(animals);
         return "forward:/html/commodity.jsp";
     }
 

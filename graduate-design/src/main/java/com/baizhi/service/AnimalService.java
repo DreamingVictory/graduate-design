@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface AnimalService {
-    public PageBeanDto<Animal> queryAllAnimal(Integer pageNo, Integer pageRows);
+    public PageBeanDto<Animal> queryAllAnimal();
     /*public List<Animal> queryAllAnimal();*/
     public List<Animal> queryAnimalsByCommend();
     public List<Animal> queryByDiscount();
@@ -19,12 +19,16 @@ public interface AnimalService {
     public Animal queryOneById(Integer id);
     public List<Animal> queryByCount();
 
+    public List<Animal> queryAllAnimls(Integer id,HttpSession session);
+
     public void insertAnimal(Animal animal, MultipartFile file);
     public void updateAnimal(Animal animal);
 
     public List<Animal> queryAllLucene(String params,HttpSession session);
+    List<Animal> queryFirstAnimals(Integer id,HttpSession session);
+
     //点击二级标题查询相对数据
-    public List<Animal> queryAnimals(Integer id, HttpSession session);
+    public List<Animal> queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows);
     //点击所有商品
     public List<Animal> queryMoreAnimals(HttpSession session);
     //销量排序

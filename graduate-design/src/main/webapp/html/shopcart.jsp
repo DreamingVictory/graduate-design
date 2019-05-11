@@ -77,7 +77,7 @@
               </div>
             </li>
             <li class="th th-price">
-              <span class="th-su">${aniaml.animal.ciurPic}hhh</span>
+              <span class="th-su">${aniaml.animal.ciurPic}9000</span>
             </li>
             <li class="th th-amount">
               <div class="box-btn layui-clear">
