@@ -40,4 +40,6 @@ public interface AnimalService {
     //新品排序
     public List<Animal> orderByDate(Integer id,Integer status);
 
+    //猜你喜欢
+    public List<Animal> likeAnimal();
 }

@@ -53,7 +53,21 @@
                   "position":"absolute"
               })
           });
-
+          //猜你喜欢
+          $.post(
+              "${pageContext.request.contextPath}/animal/queryAnimalsByCommend",
+              function (res) {
+                  for (var i = 0; i < res.length; i++) {
+                      var div = $("<div class=\"list-item\"></div>");
+                      var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
+                      var p = $("<p style=\"margin-left: 50px\"></p>").text(res[i].title);
+                      var span = $("<span></span>").text("￥" + res[i].ciurPic);
+                      var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].oriPic);
+                      div.append(a).append(p).append(span).append(span2);
+                      $("#recommend").append(div);
+                  }
+              }
+          );
 
 
           /*热销推荐*/
@@ -124,16 +138,24 @@
           </div>
       </div>
       <div class="layui-clear">
-        <div class="aside">
+        <%--<div class="aside">
           <h4>热销推荐</h4>
           <div class="item-list" id="countAnimal">
 
           </div>
-        </div>
-        <div class="detail">
-          <h4>详情</h4>
+        </div>--%>
+        <%--<div class="detail">
+          <h4>猜你喜欢</h4>
           <div class="item">
 
+          </div>
+        </div>--%>
+        <div class="product-list-box" id="product-list-box">
+          <div class="product-list-cont w1200">
+            <h4>猜你喜欢</h4>
+            <div class="product-item-box layui-clear" id="recommend">
+
+            </div>
           </div>
         </div>
       </div>
