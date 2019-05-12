@@ -21,22 +21,23 @@ public interface AnimalService {
 
     public List<Animal> queryAllAnimls(Integer id,HttpSession session);
 
+    public Integer totalPage(Integer id);
+
+    //一共找到的动物数量
+    Integer findAnimalCount(Integer id);
+
     public void insertAnimal(Animal animal, MultipartFile file);
     public void updateAnimal(Animal animal);
 
     public List<Animal> queryAllLucene(String params,HttpSession session);
-    List<Animal> queryFirstAnimals(Integer id,HttpSession session);
 
-    //点击二级标题查询相对数据
-    public List<Animal> queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows);
     //点击所有商品
     public List<Animal> queryMoreAnimals(HttpSession session);
     //销量排序
-    public List<Animal> orderBySaleCount(HttpSession session);
+    public List<Animal> orderBySaleCount(Integer id,Integer status);
     //价格排序
-    public List<Animal> orderByPrice(HttpSession session);
-   /* //新品排序
-    public List<Animal> orderByDate(HttpSession session);
-    //折扣排序
-    public List<Animal> orderByDiscount(HttpSession session);*/
+    public List<Animal> orderByPrice(Integer id,Integer status);
+    //新品排序
+    public List<Animal> orderByDate(Integer id,Integer status);
+
 }

@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,38 +51,63 @@ public class AnimalServiceImpl implements AnimalService {
     public List<Animal> queryAllAnimls(Integer id,HttpSession session){
         if(id!=null){
             Category category = categoryMapper.selectByPrimaryKey(id);
-            if(StringUtils.isNotBlank(category.getParentId().toString())){
+            if(category.getParentId()!=null){
                 Animal animal=new Animal();
                 animal.setCategoryId(id);
                 List<Animal> animalList = animalMapper.select(animal);
-                if(!animalList.isEmpty()) {
-                    session.setAttribute("totlaPage",animalList.size());
-                    return animalList;
-                }
-                else{
-                    session.setAttribute("totlaPage",0);
-                    return Collections.EMPTY_LIST;
-                }
+                if(!animalList.isEmpty()) return animalList;
+                else return Collections.EMPTY_LIST;
             }else{
                 List<Animal> animals = animalMapper.queryFirstAnimal(id);
-                if(!animals.isEmpty()) {
-                    session.setAttribute("totlaPage",animals.size());
-                    return animals;
-                }
-                else {
-                    session.setAttribute("totlaPage",0);
-                    return Collections.EMPTY_LIST;
-                }
+                if(!animals.isEmpty()) return animals;
+                else return Collections.EMPTY_LIST;
             }
         }
         List<Animal> animals = animalMapper.selectAll();
-        if(animals.isEmpty()) {
-            session.setAttribute("totlaPage",0);
-            return Collections.EMPTY_LIST;
-        }
-        session.setAttribute("totlaPage",animals.size());
+        if(animals.isEmpty()) return Collections.EMPTY_LIST;
         return animals;
     }
+
+    public Integer totalPage(Integer id){
+       if(id!=null){
+           Category category = categoryMapper.selectByPrimaryKey(id);
+           if(category.getParentId()!=null){
+               Animal animal=new Animal();
+               animal.setCategoryId(id);
+               int count = animalMapper.selectCount(animal);
+               if(count%9==0) return count/9;
+               else  return count/9+1;
+           }else{
+               List<Animal> animals = animalMapper.queryFirstAnimal(id);
+               int count=animals.size();
+               if(count%9==0) return count/9;
+               else  return count/9+1;
+           }
+       }
+        int count = animalMapper.selectCount(animalMapper.selectByPrimaryKey(id));
+        if(count%9==0) return count/9;
+        else  return count/9+1;
+    }
+
+    @Override
+    public Integer findAnimalCount(Integer id){
+        if(id!=null){
+            Category category = categoryMapper.selectByPrimaryKey(id);
+            if(category.getParentId()!=null){
+                Animal animal=new Animal();
+                animal.setCategoryId(id);
+                int count = animalMapper.selectCount(animal);
+                return count;
+            }else{
+                List<Animal> animals = animalMapper.queryFirstAnimal(id);
+                int count=animals.size();
+                return count;
+            }
+        }
+        int count = animalMapper.selectCount(animalMapper.selectByPrimaryKey(id));
+        return count;
+    }
+
 
 
     @Override
@@ -208,30 +235,6 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<Animal> queryFirstAnimals(Integer id,HttpSession session){
-        Animal animal=new Animal();
-        animal.setCategoryId(id);
-        List<Animal> animals = animalMapper.queryFirstAnimal(id);
-        int count = animalMapper.selectCount(animal);
-        session.setAttribute("animals",animals);
-        session.setAttribute("count",count);
-
-        return animals;
-    }
-
-    @Override
-    public List<Animal> queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows) {
-        Animal animal=new Animal();
-        animal.setCategoryId(id);
-        int count = animalMapper.selectCount(animal);
-        session.setAttribute("count",count);
-        PageHelper.startPage(pageNo,pageRows);
-        List<Animal> animals = animalMapper.select(animal);
-        session.setAttribute("animals",animals);
-        return animals;
-    }
-
-    @Override
     public List<Animal> queryMoreAnimals(HttpSession session) {
         List<Animal> animals = animalMapper.selectAll();
         int count = animals.size();
@@ -241,98 +244,133 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<Animal> orderBySaleCount(HttpSession session) {
-        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
-        //得到每个动物的销量进行排序   默认降序
+    public List<Animal> orderBySaleCount(Integer id,Integer status) {
+        if(id!=null){
+            Category category = categoryMapper.selectByPrimaryKey(id);
+            if(category.getParentId()!=null){
 
-        for (int i=0;i<animals.size();i++) {
-            Collections.sort(animals,new Comparator<Animal>(){
+                Example example=new Example(Animal.class);
+                if(status.equals(0))
+                    example.setOrderByClause("count DESC");
+                else
+                    example.setOrderByClause("count ASC");
 
+                example.createCriteria().andEqualTo("categoryId",id);
+                List<Animal> animalList = animalMapper.selectByExample(example);
 
-                @Override
-                public int compare(Animal o1, Animal o2) {
-                    if(o1.getCount()>=o2.getCount()){
-                        return -1;
-                    }else{
-                        return 1;
-                    }
+                if(!animalList.isEmpty()) return animalList;
+                else return Collections.EMPTY_LIST;
+            }else{
+                List<Integer> list = categoryMapper.categoryChildren(id);
+                Example example=new Example(Animal.class);
+                if(status.equals(0))
+                    example.setOrderByClause("count DESC");
+                else
+                    example.setOrderByClause("count ASC");
+                example.createCriteria().andIn("categoryId",list);
+                List<Animal> animalList = animalMapper.selectByExample(example);
 
-                }
-            });
+                if(!animalList.isEmpty()) return animalList;
+                else return Collections.EMPTY_LIST;
+            }
         }
-        return animals;
+        Example example=new Example(Animal.class);
+        if(status.equals(0))
+            example.setOrderByClause("count DESC");
+        else
+            example.setOrderByClause("count ASC");
+        example.createCriteria().andEqualTo("categoryId",id);
+        List<Animal> animalList = animalMapper.selectByExample(example);
 
+        if(!animalList.isEmpty()) return animalList;
+        else return Collections.EMPTY_LIST;
     }
 
     @Override
-    public List<Animal> orderByPrice(HttpSession session) {
-        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
-        //得到每个动物的销量进行排序   默认降序
+    public List<Animal> orderByPrice(Integer id,Integer status) {
+        if(id!=null){
+            Category category = categoryMapper.selectByPrimaryKey(id);
+            if(category.getParentId()!=null){
 
-        for (int i=0;i<animals.size();i++) {
-            Collections.sort(animals,new Comparator<Animal>(){
+                Example example=new Example(Animal.class);
+                if(status.equals(0))
+                    example.setOrderByClause("ciur_pic DESC");
+                else
+                    example.setOrderByClause("ciur_pic ASC");
 
+                example.createCriteria().andEqualTo("categoryId",id);
+                List<Animal> animalList = animalMapper.selectByExample(example);
 
-                @Override
-                public int compare(Animal o1, Animal o2) {
-                    if(o1.getCiurPic()>=o2.getCiurPic()){
-                        return -1;
-                    }else{
-                        return 1;
-                    }
+                if(!animalList.isEmpty()) return animalList;
+                else return Collections.EMPTY_LIST;
+            }else{
+                List<Integer> list = categoryMapper.categoryChildren(id);
+                Example example=new Example(Animal.class);
+                if(status.equals(0))
+                    example.setOrderByClause("ciur_pic DESC");
+                else
+                    example.setOrderByClause("ciur_pic ASC");
+                example.createCriteria().andIn("categoryId",list);
+                List<Animal> animalList = animalMapper.selectByExample(example);
 
-                }
-            });
+                if(!animalList.isEmpty()) return animalList;
+                else return Collections.EMPTY_LIST;
+            }
         }
-        return animals;
+        Example example=new Example(Animal.class);
+        if(status.equals(0))
+            example.setOrderByClause("ciur_pic DESC");
+        else
+            example.setOrderByClause("ciur_pic ASC");
+        example.createCriteria().andEqualTo("categoryId",id);
+        List<Animal> animalList = animalMapper.selectByExample(example);
+
+        if(!animalList.isEmpty()) return animalList;
+        else return Collections.EMPTY_LIST;
     }
 
-   /* @Override
-    public List<Animal> orderByDate(HttpSession session) {
-        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
-        //得到每个动物的销量进行排序   默认降序
+   @Override
+    public List<Animal> orderByDate(Integer id,Integer status) {
+       if(id!=null){
+           Category category = categoryMapper.selectByPrimaryKey(id);
+           if(category.getParentId()!=null){
 
-        for (int i=0;i<animals.size();i++) {
-            Collections.sort(animals,new Comparator<Animal>(){
+               Example example=new Example(Animal.class);
+               if(status.equals(0))
+                   example.setOrderByClause("pub_date DESC");
+               else
+                   example.setOrderByClause("pub_date ASC");
 
+               example.createCriteria().andEqualTo("categoryId",id);
+               List<Animal> animalList = animalMapper.selectByExample(example);
 
-                @Override
-                public int compare(Animal o1, Animal o2) {
-                    SimpleDateFormat simpleDateFormat=new SimpleDateFormat();
-                    String format1 = simpleDateFormat.format(o1.getPubDate());
-                    String format2 = simpleDateFormat.format(o2.getPubDate());
-                    if(Integer.valueOf(format1)>Integer.valueOf(format2)){
-                        return -1;
-                    }else{
-                        return 1;
-                    }
+               if(!animalList.isEmpty()) return animalList;
+               else return Collections.EMPTY_LIST;
+           }else{
+               List<Integer> list = categoryMapper.categoryChildren(id);
+               Example example=new Example(Animal.class);
+               if(status.equals(0))
+                   example.setOrderByClause("pub_date DESC");
+               else
+                   example.setOrderByClause("pub_date ASC");
+               example.createCriteria().andIn("categoryId",list);
+               List<Animal> animalList = animalMapper.selectByExample(example);
 
-                }
-            });
-        }
-        return animals;
+               if(!animalList.isEmpty()) return animalList;
+               else return Collections.EMPTY_LIST;
+           }
+       }
+       Example example=new Example(Animal.class);
+       if(status.equals(0))
+           example.setOrderByClause("pub_date DESC");
+       else
+           example.setOrderByClause("pub_date ASC");
+       example.createCriteria().andEqualTo("categoryId",id);
+       List<Animal> animalList = animalMapper.selectByExample(example);
+
+       if(!animalList.isEmpty()) return animalList;
+       else return Collections.EMPTY_LIST;
     }
 
-    @Override
-    public List<Animal> orderByDiscount(HttpSession session) {
-        List<Animal> animals = (List<Animal>)session.getAttribute("animals");
-        //得到每个动物的销量进行排序   默认降序
 
-        for (int i=0;i<animals.size();i++) {
-            Collections.sort(animals,new Comparator<Animal>(){
-
-
-                @Override
-                public int compare(Animal o1, Animal o2) {
-                    if(Integer.valueOf(o1.getDiscount())>Integer.valueOf(o2.getDiscount())){
-                        return -1;
-                    }else{
-                        return 1;
-                    }
-
-                }
-            });
-        }
-        return animals;
-    }*/
 }

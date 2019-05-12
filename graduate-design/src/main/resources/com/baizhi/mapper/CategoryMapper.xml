@@ -18,5 +18,9 @@
         from category f join category s on f.id=s.parent_id
     </select>
 
+    <select id="categoryChildren" parameterType="Integer" resultType="Category">
+        select id from category  where parent_id=#{id}
+    </select>
+
 
 </mapper>

@@ -39,7 +39,6 @@ public class AnimalController {
     public List<Animal> queryByDiscount(Integer pageNo,Integer pageRows) {
         PageHelper.startPage(pageNo,pageRows);
         List<Animal> animals = service.queryByDiscount();
-        System.out.println(animals);
         return animals;
     }
     @RequestMapping("queryByCatDog")
@@ -98,12 +97,6 @@ public class AnimalController {
         return animals;
     }
 
-    @RequestMapping("queryAnimals")
-    public String queryAnimals(Integer id, HttpSession session,Integer pageNo,Integer pageRows){
-        List<Animal> animals = service.queryAnimals(id, session,pageNo,pageRows);
-        return "forward:/html/commodity.jsp";
-    }
-
     @ResponseBody
     @RequestMapping("animals")
     public List<Animal> queryAllAnimals(Integer id,HttpSession session,Integer page,Integer rows){
@@ -112,11 +105,21 @@ public class AnimalController {
         return animals;
     }
 
-    @RequestMapping("queryFirstAnimals")
-    public String queryFirstAnimals(Integer id, HttpSession session){
-        List<Animal> animals = service.queryFirstAnimals(id, session);
-        System.out.println(animals);
-        return "forward:/html/commodity.jsp";
+    @ResponseBody
+    @RequestMapping("totalPage")
+    public Integer totalPage(Integer id){
+        Integer page = service.totalPage(id);
+        if(page!=null)
+            return page;
+        else
+            return 0;
+    }
+
+    @ResponseBody
+    @RequestMapping("findAnimalCount")
+    public Integer findAnimalCount(Integer id){
+        Integer animalCount = service.findAnimalCount(id);
+        return animalCount;
     }
 
     @RequestMapping("queryMoreAnimals")
@@ -125,15 +128,28 @@ public class AnimalController {
         return "forward:/html/commodity.jsp";
     }
 
+    @ResponseBody
     @RequestMapping("orderBySaleCount")
-    public String orderBySaleCount(HttpSession session){
-        List<Animal> animals = service.orderBySaleCount(session);
-        return "forward:/html/commodity.jsp";
+    public List<Animal> orderBySaleCount(Integer id,Integer status,Integer page, Integer rows){
+        PageHelper.startPage(page,rows);
+        List<Animal> animals = service.orderBySaleCount(id,status);
+        return animals;
     }
+
+    @ResponseBody
     @RequestMapping("orderByPrice")
-    public String orderByPrice(HttpSession session){
-        List<Animal> animals = service.orderByPrice(session);
-        return "forward:/html/commodity.jsp";
+    public List<Animal> orderByPrice(Integer id,Integer status,Integer page, Integer rows){
+        PageHelper.startPage(page,rows);
+        List<Animal> animals = service.orderByPrice(id, status);
+        return animals;
+    }
+
+    @ResponseBody
+    @RequestMapping("orderByDate")
+    public List<Animal> orderByDate(Integer id,Integer status,Integer page, Integer rows){
+        PageHelper.startPage(page,rows);
+        List<Animal> animals = service.orderByDate(id, status);
+        return animals;
     }
 
 

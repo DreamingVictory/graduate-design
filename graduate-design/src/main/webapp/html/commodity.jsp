@@ -16,6 +16,7 @@
     <script>
         var page;
         var id;
+        var status;
         layui.config({
             base: '../res/static/js/util/' //你存放新模块的目录，注意，不是layui的模块目录
         }).use(['mm', 'laypage', 'jquery'], function () {
@@ -29,6 +30,27 @@
                 id = "${param.id}";
                 page = "${param.pageNo}";
                 $("#currentPage").text(page);
+                status=0;
+
+
+                $.ajax({
+                    type:"POST",
+                    url:"${pageContext.request.contextPath}/animal/totalPage",
+                    data:"id="+id,
+                    success:function (res) {
+                        $("#totalPage").text(res);
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/animal/findAnimalCount",
+                    data:"id="+id,
+                    dataType: "JSON",
+                    success:function (res) {
+                        $("#count").text(res);
+                    }
+                });
 
 
                 $.ajax({
@@ -43,7 +65,7 @@
                             dl.append(dt);
                             for (var j = 0; j < res[i].children.length; j++) {
                                 //var dd = $("<dd><a href='${pageContext.request.contextPath}/animal/queryAnimals?id=" + res[i].children[j].id + "'>" + res[i].children[j].title + "</a></dd>");
-                                var dd = $("<dd><a href='javascript:;' onclick='secondsCategory(res[i].id)'>" + res[i].children[j].title + "</a></dd>");
+                                var dd = $("<dd><a href='javascript:;' id='dd' onclick='secondsCategory("+res[i].children[j].id+")'>" + res[i].children[j].title + "</a></dd>");
                                 dl.append(dd);
                             }
                             $("#categoryAll").append(dl);
@@ -95,115 +117,249 @@
                         $(this).attr('off', true)
                     }
                 })
+                
+                $("#saleCount").click(function () {
+                    if(status==0){
+                        status=1;
+                    }else{
+                        status=0;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/animal/orderBySaleCount",
+                        data:"id="+id+"&status="+status+"&page="+page+"&rows=${param.pageRows}",
+                        dataType: "JSON",
+                        success:function (res) {
+                            $("#list-cont").empty();
+                            for (var i = 0; i < res.length; i++) {
+                                var animal = res[i];
+
+                                var div = "<div class=\"item\">\n" +
+                                    "                                <div class=\"img\">\n" +
+                                    "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                                    "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                                    "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                                    "                                </div>\n" +
+                                    "                                <div class=\"text\">\n" +
+                                    "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                                    "                                    <p class=\"price\">\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                                    "                                    </p>\n" +
+                                    "                                </div>\n" +
+                                    "                            </div>";
+                                $("#list-cont").append(div);
+                            }
+                        }
+                    })
+                })
+
+                $("#price").click(function () {
+                    if(status==0){
+                        status=1;
+                    }else{
+                        status=0;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/animal/orderByPrice",
+                        data:"id="+id+"&status="+status+"&page="+page+"&rows=${param.pageRows}",
+                        dataType: "JSON",
+                        success:function (res) {
+                            $("#list-cont").empty();
+                            for (var i = 0; i < res.length; i++) {
+                                var animal = res[i];
+
+                                var div = "<div class=\"item\">\n" +
+                                    "                                <div class=\"img\">\n" +
+                                    "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                                    "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                                    "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                                    "                                </div>\n" +
+                                    "                                <div class=\"text\">\n" +
+                                    "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                                    "                                    <p class=\"price\">\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                                    "                                    </p>\n" +
+                                    "                                </div>\n" +
+                                    "                            </div>";
+                                $("#list-cont").append(div);
+                            }
+                        }
+                    })
+                })
+                
+                $("#pubDate").click(function () {
+                    if(status==0){
+                        status=1;
+                    }else{
+                        status=0;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "${pageContext.request.contextPath}/animal/orderByDate",
+                        data:"id="+id+"&status="+status+"&page="+page+"&rows=${param.pageRows}",
+                        dataType: "JSON",
+                        success:function (res) {
+                            $("#list-cont").empty();
+                            for (var i = 0; i < res.length; i++) {
+                                var animal = res[i];
+
+                                var div = "<div class=\"item\">\n" +
+                                    "                                <div class=\"img\">\n" +
+                                    "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                                    "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                                    "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                                    "                                </div>\n" +
+                                    "                                <div class=\"text\">\n" +
+                                    "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                                    "                                    <p class=\"price\">\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                                    "                                    </p>\n" +
+                                    "                                </div>\n" +
+                                    "                            </div>";
+                                $("#list-cont").append(div);
+                            }
+                        }
+                    })
+                })
+                
+                $("#lastPage").click(function () {
+                    if(page>1){
+                        page=Number(page)-1;
+                        $("#currentPage").text(page);
+                        $.ajax({
+                            type: "POST",
+                            url: "${pageContext.request.contextPath}/animal/animals",
+                            data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
+                            dataType: "JSON",
+                            async: false,
+                            success: function (res) {
+                                $("#list-cont").empty();
+                                for (var i = 0; i < res.length; i++) {
+                                    var animal = res[i];
+
+                                    var div = "<div class=\"item\">\n" +
+                                        "                                <div class=\"img\">\n" +
+                                        "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                                        "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                                        "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                                        "                                </div>\n" +
+                                        "                                <div class=\"text\">\n" +
+                                        "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                                        "                                    <p class=\"price\">\n" +
+                                        "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                        "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                                        "                                    </p>\n" +
+                                        "                                </div>\n" +
+                                        "                            </div>";
+                                    $("#list-cont").append(div);
+                                }
+
+                            }
+                        });
+                    }
+
+                })
+
+
+                $("#nextPage").click(function () {
+                    if(page<$("#totalPage").text()){
+                        page=Number(page)+1;
+                        $("#currentPage").text(page);
+                        $.ajax({
+                            type: "POST",
+                            url: "${pageContext.request.contextPath}/animal/animals",
+                            data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
+                            dataType: "JSON",
+                            async: false,
+                            success: function (res) {
+                                $("#list-cont").empty();
+                                for (var i = 0; i < res.length; i++) {
+                                    var animal = res[i];
+
+                                    var div = "<div class=\"item\">\n" +
+                                        "                                <div class=\"img\">\n" +
+                                        "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                                        "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                                        "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                                        "                                </div>\n" +
+                                        "                                <div class=\"text\">\n" +
+                                        "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                                        "                                    <p class=\"price\">\n" +
+                                        "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                        "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                                        "                                    </p>\n" +
+                                        "                                </div>\n" +
+                                        "                            </div>";
+                                    $("#list-cont").append(div);
+                                }
+
+                            }
+                        });
+                    }
+                })
 
             })
-            
-            function secondsCategory(secondId) {
-                id=secondId;
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/animal/animals",
-                    data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
-                    dataType: "JSON",
-                    async: false,
-                    success: function (res) {
-                        $("#list-cont").empty();
-                        for (var i = 0; i < res.length; i++) {
-                            var animal = res[i];
 
-                            var div = "<div class=\"item\">\n" +
-                                "                                <div class=\"img\">\n" +
-                                "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
-                                "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
-                                "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
-                                "                                </div>\n" +
-                                "                                <div class=\"text\">\n" +
-                                "                                    <p class=\"title\">"+animal.title+"</p>\n" +
-                                "                                    <p class=\"price\">\n" +
-                                "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
-                                "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
-                                "                                    </p>\n" +
-                                "                                </div>\n" +
-                                "                            </div>";
-                            $("#list-cont").append(div);
-                        }
-
-                    }
-                });
-
-            }
-
-            function lastPage(){
-                page  = page - 1;
-                $("#currentPage").text(page);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/animal/animals",
-                    data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
-                    dataType: "JSON",
-                    async: false,
-                    success: function (res) {
-                        $("#list-cont").empty();
-                        for (var i = 0; i < res.length; i++) {
-                            var animal = res[i];
-
-                            var div = "<div class=\"item\">\n" +
-                                "                                <div class=\"img\">\n" +
-                                "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
-                                "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
-                                "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
-                                "                                </div>\n" +
-                                "                                <div class=\"text\">\n" +
-                                "                                    <p class=\"title\">"+animal.title+"</p>\n" +
-                                "                                    <p class=\"price\">\n" +
-                                "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
-                                "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
-                                "                                    </p>\n" +
-                                "                                </div>\n" +
-                                "                            </div>";
-                            $("#list-cont").append(div);
-                        }
-
-                    }
-                });
-            }
-
-            function nextPage(){
-                page  = page + 1;
-                $("#currentPage").text(page);
-                $.ajax({
-                    type: "POST",
-                    url: "${pageContext.request.contextPath}/animal/animals",
-                    data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
-                    dataType: "JSON",
-                    async: false,
-                    success: function (res) {
-                        $("#list-cont").empty();
-                        for (var i = 0; i < res.length; i++) {
-                            var animal = res[i];
-
-                            var div = "<div class=\"item\">\n" +
-                                "                                <div class=\"img\">\n" +
-                                "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
-                                "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
-                                "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
-                                "                                </div>\n" +
-                                "                                <div class=\"text\">\n" +
-                                "                                    <p class=\"title\">"+animal.title+"</p>\n" +
-                                "                                    <p class=\"price\">\n" +
-                                "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
-                                "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
-                                "                                    </p>\n" +
-                                "                                </div>\n" +
-                                "                            </div>";
-                            $("#list-cont").append(div);
-                        }
-
-                    }
-                });
-            }
 
         });
+        function secondsCategory(secondId) {
+            id=secondId;
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/animal/findAnimalCount",
+                data:"id="+id,
+                dataType: "JSON",
+                success:function (res) {
+                    $("#count").text(res);
+                }
+            });
+            $.ajax({
+                type:"POST",
+                url:"${pageContext.request.contextPath}/animal/totalPage",
+                data:"id="+id,
+                success:function (res) {
+                    $("#totalPage").text(res);
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "${pageContext.request.contextPath}/animal/animals",
+                data:"id="+id+"&page="+page+"&rows=${param.pageRows}",
+                dataType: "JSON",
+                async: false,
+                success: function (res) {
+                    $("#list-cont").empty();
+                    for (var i = 0; i < res.length; i++) {
+                        var animal = res[i];
+
+                        var div = "<div class=\"item\">\n" +
+                            "                                <div class=\"img\">\n" +
+                            "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
+                            "                                            style=\"margin: 50px 100px 50px 50px\"\n" +
+                            "                                            src=http://192.168.46.138/"+animal.img+" /></a>\n" +
+                            "                                </div>\n" +
+                            "                                <div class=\"text\">\n" +
+                            "                                    <p class=\"title\">"+animal.title+"</p>\n" +
+                            "                                    <p class=\"price\">\n" +
+                            "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                            "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
+                            "                                    </p>\n" +
+                            "                                </div>\n" +
+                            "                            </div>";
+                        $("#list-cont").append(div);
+                    }
+
+                }
+            });
+        }
+
     </script>
 </head>
 <body>
@@ -223,15 +379,14 @@
             <div class="right-cont-wrap">
                 <div class="right-cont">
                     <div class="sort layui-clear">
-                        <a class="active" href="${pageContext.request.contextPath}/animal/orderBySaleCount"
-                           event='volume'>销量</a>
-                        <a href="${pageContext.request.contextPath}/animal/orderByPrice" event='price'>价格</a>
-                        <a href="javascript:;" event='newprod'>新品</a>
-                        <a href="javascript:;" event='collection'>收藏</a>
+                        <a class="active" href="javascript:;"
+                          id="saleCount">销量</a>
+                        <a href="javascript:;" event='price' id="price">价格</a>
+                        <a href="javascript:;" event='newprod' id="pubDate">新品</a>
                     </div>
                     <div class="prod-number">
-                        <span id="count" style="color: #9175ad;font-family: '微软雅黑', 'Microsoft Yahei'">
-                            <b>一共为您找到${sessionScope.count}只小动物</b>
+                        <span style="color: #9175ad;font-family: '微软雅黑', 'Microsoft Yahei'">
+                            <b>一共为您找到<span id="count"></span>只小动物</b>
                         </span>
                     </div>
                     <div class="cont-list layui-clear" id="list-cont">
@@ -239,11 +394,11 @@
                     <div id="demo0" style="text-align: center;">
                         <div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-1">
                             <a href="javascript:;" id="lastPage"
-                               class="layui-laypage-prev layui-disabled" onclick="lastPage()">上一页</a>
+                               class="layui-laypage-prev ">上一页</a>
                             <a href="javascript:;">第<span id="currentPage"></span>页/共<span
-                                    id="totalPage">${sessionScope.totalPage}</span>页</a>
+                                    id="totalPage"></span>页</a>
                             <a href="javascript:;" id="nextPage"
-                               class="layui-laypage-next" onclick="nextPage()">下一页</a>
+                               class="layui-laypage-next">下一页</a>
                         </div>
                     </div>
                 </div>

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CategoryMapper extends Mapper<Category> {
     public List<Category> queryAllCategory();
+    public List<Integer> categoryChildren(Integer id);
 }
