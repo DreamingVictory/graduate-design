@@ -8,4 +8,6 @@ public interface UserService {
     public void obtain(String phone);
     public void regist(User user,String code, String phone);
     public void login(String phone, String password,String vcode, HttpSession session);
+    public User findByPhone(String phone,HttpSession session);
+    public void update(User user);
 }

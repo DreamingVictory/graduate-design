@@ -7,11 +7,9 @@ import com.baizhi.lucene.LuceneDao;
 import com.baizhi.mapper.AnimalMapper;
 import com.baizhi.mapper.CategoryMapper;
 import com.baizhi.service.AnimalService;
-import com.github.pagehelper.PageHelper;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +18,8 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 @Service
 @Transactional
@@ -370,6 +366,21 @@ public class AnimalServiceImpl implements AnimalService {
 
        if(!animalList.isEmpty()) return animalList;
        else return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public List<Animal> queryBySale(){
+        Example example=new Example(Animal.class);
+        example.setOrderByClause("count DESC");
+
+        List<Animal> animalList = animalMapper.selectByExample(example);
+        List<Animal> list=new ArrayList<>();
+        for (int i = 0; i < animalList.size(); i++) {
+            list.add(animalList.get(i));
+            if(list.size()==3) break;
+        }
+
+        return list;
     }
 
 

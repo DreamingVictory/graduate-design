@@ -97,8 +97,8 @@
                             var div = $("<div class=\"list-item\"></div>");
                             var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                             var p = $("<p style=\"margin-left: 50px\"></p>").text(res[i].title);
-                            var span = $("<span></span>").text("￥" + res[i].ciurPic);
-                            var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].oriPic);
+                            var span = $("<span></span>").text("￥" + res[i].price);
+                            var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].cost);
                             div.append(a).append(p).append(span).append(span2);
                             $("#recommend").append(div);
                         }
@@ -152,8 +152,8 @@
                                 var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                                 var div2 = $("<div class=\"title\"></div>").text(res[i].title);
                                 var div3 = $("<div class=\"price\"></div>");
-                                var span = $("<span></span>").text("￥" + res[i].ciurPic);
-                                var del = $("<del></del>").text("￥" + res[i].oriPic);
+                                var span = $("<span></span>").text("￥" + res[i].price);
+                                var del = $("<del></del>").text("￥" + res[i].cost);
                                 div3.append(span).append(del);
                                 div.append(a).append(div2).append(div3);
                                 $("#lunbo" + pageNo).append(div);

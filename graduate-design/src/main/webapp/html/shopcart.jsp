@@ -8,8 +8,19 @@
   <link rel="stylesheet" type="text/css" href="../res/static/css/main.css">
   <link rel="stylesheet" type="text/css" href="../res/layui/css/layui.css">
   <script type="text/javascript" src="../res/layui/layui.js"></script>
+  <script src="../res/js/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <script>
+
+    function del(id) {
+        $.post(
+            "${pageContext.request.contextPath}/cart/deleteCart","id="+id,function(){},"JSON"
+        );
+    }
+
+  </script>
+
 </head>
 <body>
   <%@include file="common/head.jsp"%>
@@ -72,17 +83,16 @@
                 <a href="javascript:;"><img width="20px" height="20px" style="margin: 0px 0px 20px 50px" src=http://192.168.46.138/${animal.animal.img} /></a>
                 <div class="text">
                   <div class="title">${animal.animal.title}</div>
-                  <p><span>粉色</span>  <span>130</span>cm</p>
                 </div>
               </div>
             </li>
             <li class="th th-price">
-              <span class="th-su">${aniaml.animal.ciurPic}9000</span>
+              <span class="th-su">${animal.animal.price}</span>
             </li>
             <li class="th th-amount">
               <div class="box-btn layui-clear">
                 <div class="less layui-btn">-</div>
-                <input class="Quantity-input" type="" name="" value="1" disabled="disabled">
+                <input class="Quantity-input" type="" name="" value="${animal.count}" disabled="disabled">
                 <div class="add layui-btn">+</div>
               </div>
             </li>
@@ -90,7 +100,7 @@
               <span class="sum">${animal.totalPrice}</span>
             </li>
             <li class="th th-op">
-              <span class="dele-btn">删除</span>
+              <a class="dele-btn" id="delete_cartitem" onclick="del(${animal.animal.id})">删除</a></span>
             </li>
           </ul>
           </c:forEach>

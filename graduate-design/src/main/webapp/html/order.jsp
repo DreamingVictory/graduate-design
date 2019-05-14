@@ -188,12 +188,11 @@
                                                             src=http://192.168.46.138/${animal.animal.img} /></a>
                                 <div class="text">
                                     <div class="title">${animal.animal.title}</div>
-                                    <p><span>粉色</span> <span>130</span>cm</p>
                                 </div>
                             </div>
                         </li>
                         <li class="th th-price">
-                            <span class="th-su">${aniaml.animal.ciurPic}9000</span>
+                            <span class="th-su">${animal.animal.price}</span>
                         </li>
                         <li class="th th-amount">
                             <div class="box-btn layui-clear">

@@ -32,8 +32,8 @@ public class LuceneDaoImpl implements LuceneDao {
         document.add(new IntField("id", animal.getId(), Field.Store.YES));
         document.add(new TextField("title", animal.getTitle(), Field.Store.YES));
         document.add(new StringField("img", animal.getImg(), Field.Store.YES));
-        document.add(new DoubleField("ciurPic",animal.getCiurPic(), Field.Store.YES));
-        document.add(new DoubleField("oriPic",animal.getOriPic(), Field.Store.YES));
+        document.add(new DoubleField("ciurPic",animal.getPrice(), Field.Store.YES));
+        document.add(new DoubleField("oriPic",animal.getPrice(), Field.Store.YES));
         document.add(new TextField("discount", animal.getDiscount(), Field.Store.YES));
         document.add(new IntField("count", animal.getCount(), Field.Store.YES));
         document.add(new IntField("categoryId", animal.getCategoryId(), Field.Store.YES));
@@ -110,8 +110,8 @@ public class LuceneDaoImpl implements LuceneDao {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date productDate = simpleDateFormat.parse(document.get("pubDate"));
             animal.setPubDate(productDate);
-            animal.setCiurPic(Double.valueOf(document.get("ciurPic")));
-            animal.setOriPic(Double.valueOf(document.get("oriPic")));
+            animal.setPrice(Double.valueOf(document.get("ciurPic")));
+            animal.setPrice(Double.valueOf(document.get("oriPic")));
             animal.setCategoryId(Integer.valueOf(document.get("categoryId")));
 
 

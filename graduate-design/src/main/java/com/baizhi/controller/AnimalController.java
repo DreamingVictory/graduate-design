@@ -152,5 +152,12 @@ public class AnimalController {
         return animals;
     }
 
+    @ResponseBody
+    @RequestMapping("queryBySale")
+    public List<Animal> queryBySale(){
+        List<Animal> animals = service.queryBySale();
+        return animals;
+    }
+
 
 }

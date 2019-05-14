@@ -46,4 +46,15 @@ public class UserController {
         return "redirect:/html/index.jsp";
     }
 
+    @RequestMapping("findByPhone")
+    public String findByPhone(String phone,HttpSession session){
+        User user = service.findByPhone(phone, session);
+        return "redirect:/html/info.jsp";
+    }
+
+    @RequestMapping("update")
+    public void update(User user){
+        service.update(user);
+    }
+
 }

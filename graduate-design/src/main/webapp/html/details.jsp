@@ -61,8 +61,8 @@
                       var div = $("<div class=\"list-item\"></div>");
                       var a = $("<a href='${pageContext.request.contextPath}/animal/queryOneById?id="+res[i].id+"'><img src='http://192.168.46.138/" + res[i].img + "'/></a>");
                       var p = $("<p style=\"margin-left: 50px\"></p>").text(res[i].title);
-                      var span = $("<span></span>").text("￥" + res[i].ciurPic);
-                      var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].oriPic);
+                      var span = $("<span></span>").text("￥" + res[i].price);
+                      var span2 = $("<del style='padding-left: 40px'></del>").text("￥" + res[i].cost);
                       div.append(a).append(p).append(span).append(span2);
                       $("#recommend").append(div);
                   }
@@ -87,7 +87,7 @@
       function add(id){
         $.post(
             "${pageContext.request.contextPath}/cart/addCart",
-            "id="+id,
+            "id="+id+"&count="+$("#addCount").val(),
             function(res){
                 var s = "\"ok\"";
                 if(res==s){
@@ -123,12 +123,12 @@
                 <span><i class="layui-icon layui-icon-rate-solid"></i>收藏</span>
               </div>
               <div class="summary">
-                <p class="reference"><span>参考价</span> <del>￥${sessionScope.details.oriPic}</del></p>
-                <p class="activity"><span>活动价</span><strong class="price"><i>￥</i>${sessionScope.details.ciurPic}</strong></p>
+                <p class="reference"><span>参考价</span> <del>￥${sessionScope.details.cost}</del></p>
+                <p class="activity"><span>活动价</span><strong class="price"><i>￥</i>${sessionScope.details.price}</strong></p>
                 <p class="address-box"><span>描&nbsp;&nbsp;&nbsp;&nbsp;述</span><strong class="address">${sessionScope.details.description}</strong></p>
               </div>
               <div class="choose-attrs">
-                <div class="number layui-clear"><span class="title">数&nbsp;&nbsp;&nbsp;&nbsp;量</span><div class="number-cont"><span class="cut btn">-</span><input onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="4" type="" name="" value="1"><span class="add btn">+</span></div></div>
+                <div class="number layui-clear"><span class="title">数&nbsp;&nbsp;&nbsp;&nbsp;量</span><div class="number-cont"><span class="cut btn">-</span><input onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="4" type="" name="" value="1" id="addCount"><span class="add btn">+</span></div></div>
               </div>
               <div class="choose-btns">
                 <button class="layui-btn layui-btn-primary purchase-btn">立刻购买</button>

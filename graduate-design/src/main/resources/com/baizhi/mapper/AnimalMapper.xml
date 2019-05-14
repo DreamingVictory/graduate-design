@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.baizhi.mapper.AnimalMapper">
     <select id="queryAnimalsByCommend"  resultType="Animal">
-        select id,title,ciur_pic ciurPic,img,ori_pic oriPic  from animal order by recommand desc
+        select id,title,price,img,cost  from animal order by recommand desc
     </select>
     <select id="queryByDiscount" resultType="Animal">
-        select id,title,ciur_pic ciurPic,img,ori_pic oriPic from animal order by discount
+        select id,title,price,img,cost from animal order by discount
     </select>
     <select id="queryByCatDog" resultType="Animal">
         select id,img,title from animal where category_id in (select id from category  where parent_id in (1,2))
@@ -17,10 +17,10 @@
         select id,img,title from animal where category_id in (select id from category  where parent_id in (3,4))
     </select>
     <select id="queryByCount" resultType="Animal">
-        select id,img,title,ciur_pic ciurPic from animal order by count desc
+        select id,img,title,price from animal order by count desc
     </select>
     <select id="queryFirstAnimal" parameterType="Integer" resultType="Animal">
-        select id,img,title,ciur_pic ciurPic from animal where category_id in (select id from category  where parent_id=#{id})
+        select id,img,title,price from animal where category_id in (select id from category  where parent_id=#{id})
     </select>
 
 </mapper>

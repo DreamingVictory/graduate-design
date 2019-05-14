@@ -26,7 +26,7 @@ public class CartServiceImpl implements CartService {
 
 
     @Override//添加购物车
-    public String addCart(Integer id, HttpSession session) {
+    public String addCart(Integer id,Integer count, HttpSession session) {
         ValueOperations strOps = redisTemplate.opsForValue();
         String principal = (String)SecurityUtils.getSubject().getPrincipal();
         if(principal==null){
@@ -39,17 +39,18 @@ public class CartServiceImpl implements CartService {
             CartItem cartItem=new CartItem();
             Animal animal = animalMapper.selectByPrimaryKey(id);
             cartItem.setAnimal(animal);
-            cartItem.setTotalPrice(animal.getCiurPic());
+            cartItem.setCount(count);
+            cartItem.setTotalPrice(animal.getPrice()*count);
             map2.put(id,cartItem);
 
             strOps.set(principal,map2);
-            strOps.set("totalPrice",animal.getCiurPic());
+            strOps.set("totalPrice",animal.getPrice()*count);
 
         }else{//购物车存在
             if(map.containsKey(id)){//该商品已存在
                 CartItem cartItem = map.get(id);
-                cartItem.setCount(cartItem.getCount()+1);
-                cartItem.setTotalPrice(cartItem.getAnimal().getCiurPic()*cartItem.getCount());
+                cartItem.setCount(cartItem.getCount()+count);
+                cartItem.setTotalPrice(cartItem.getAnimal().getPrice()*cartItem.getCount());
 
                 Double totalPrice=(Double)strOps.get("totalPrice");
                 strOps.set(principal,map);
@@ -59,7 +60,8 @@ public class CartServiceImpl implements CartService {
                 CartItem cartItem=new CartItem();
                 Animal animal = animalMapper.selectByPrimaryKey(id);
                 cartItem.setAnimal(animal);
-                cartItem.setTotalPrice(animal.getCiurPic());
+                cartItem.setCount(count);
+                cartItem.setTotalPrice(animal.getPrice()*count);
                 map.put(id,cartItem);
 
                 Double totalPrice=(Double)strOps.get("totalPrice");
@@ -89,5 +91,17 @@ public class CartServiceImpl implements CartService {
         session.setAttribute("cartitem",animals);
         session.setAttribute("totalPrice",totalPrice);
         return "ok";
+    }
+
+    @Override
+    public void deleteCartItem(Integer id){
+        ValueOperations strOps = redisTemplate.opsForValue();
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        if(principal==null){
+            return ;
+        }
+        Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
+        map.remove(id);
+        strOps.set(principal,map);
     }
 }

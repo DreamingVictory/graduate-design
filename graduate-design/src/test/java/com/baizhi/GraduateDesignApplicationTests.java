@@ -92,8 +92,8 @@ public class GraduateDesignApplicationTests {
         document.add(new IntField("id", animal.getId(), Field.Store.YES));
         document.add(new TextField("title", animal.getTitle(), Field.Store.YES));
         document.add(new StringField("img", animal.getImg(), Field.Store.YES));
-        document.add(new DoubleField("ciurPic",animal.getCiurPic(), Field.Store.YES));
-        document.add(new DoubleField("oriPic",animal.getOriPic(), Field.Store.YES));
+        document.add(new DoubleField("ciurPic",animal.getPrice(), Field.Store.YES));
+        document.add(new DoubleField("oriPic",animal.getCost(), Field.Store.YES));
         document.add(new TextField("discount", animal.getDiscount(), Field.Store.YES));
         document.add(new IntField("count", animal.getCount(), Field.Store.YES));
         document.add(new IntField("categoryId", animal.getCategoryId(), Field.Store.YES));

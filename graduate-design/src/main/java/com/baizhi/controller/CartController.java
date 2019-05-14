@@ -17,8 +17,8 @@ public class CartController {
     CartService service;
     @ResponseBody
     @RequestMapping("addCart")
-    public String addCart(Integer id, HttpSession session){
-        String result = service.addCart(id, session);
+    public String addCart(Integer id,Integer count, HttpSession session){
+        String result = service.addCart(id,count, session);
         return result;
     }
 
@@ -26,6 +26,12 @@ public class CartController {
     public String getCartAnimal(HttpSession session){
         String result = service.getCartAnimal(session);
         return "forward:/html/shopcart.jsp";
+    }
+
+    @RequestMapping("deleteCart")
+    @ResponseBody
+    public void deleteCartItem(Integer id){
+        service.deleteCartItem(id);
     }
 
 }

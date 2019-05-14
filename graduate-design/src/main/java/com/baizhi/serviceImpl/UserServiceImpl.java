@@ -144,4 +144,19 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("密码错误");
         }
     }
+
+    @Override
+    public User findByPhone(String phone,HttpSession session) {
+        User user1=new User();
+        user1.setPhone(phone);
+        User user = userMapper.selectOne(user1);
+        session.setAttribute("detailUser",user);
+        if(user==null) return null;
+        return user;
+    }
+
+    @Override
+    public void update(User user){
+       userMapper.updateByPrimaryKey(user);
+    }
 }
