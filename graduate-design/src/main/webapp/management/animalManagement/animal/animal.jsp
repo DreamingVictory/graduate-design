@@ -95,8 +95,8 @@
             pageList: [5, 10, 15, 20],
             columns: [[
                 {field: "title", title: "名字", width: 1},
-                {field: "ciurPic", title: "当前价格", width: 1},
-                {field: "oriPic", title: "原价", width: 1},
+                {field: "price", title: "当前价格", width: 1},
+                {field: "cost", title: "原价", width: 1},
                 {
                     field: "status", title: "状态", width: 1,
                     editor: {type: "text", options: {required: true}}//添加该属性后，表示该列可以双击进行修改

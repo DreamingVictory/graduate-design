@@ -8,7 +8,6 @@
                 <shiro:authenticated>
                     <a href="${pageContext.request.contextPath}/html/changePassword.jsp">修改密码</a>
                     <a href="${pageContext.request.contextPath}/html/personalMsg.jsp">个人信息</a>
-                    <a href="${pageContext.request.contextPath}/html/address.jsp">收货地址</a>
                     <a href="${pageContext.request.contextPath}/html/showOrder.jsp">历史订单</a>
                 </shiro:authenticated>
                 <a href="#">关于我们</a>

@@ -112,7 +112,7 @@
         })
 
         function submit() {
-            location.href="${pageContext.request.contextPath}/html/orderSuucess.jsp?addressId="+$("#history").val();
+            location.href="${pageContext.request.contextPath}/html/orderSuccess.jsp?addressId="+$("#history").val();
         }
         function clickme(){
             if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){

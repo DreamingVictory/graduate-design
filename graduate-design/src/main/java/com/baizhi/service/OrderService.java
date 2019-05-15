@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public interface OrderService {
-    void insertOrder(Integer addressId, HttpSession session);
+    Order insertOrder(Integer addressId, HttpSession session);
 
     List<Order> queryAllOrders();
 

@@ -25,12 +25,10 @@
         );
     }
 
-    function sub(count,id) {
-        if(count > 1){
+    function sub(id) {
             $.post(
                 "${pageContext.request.contextPath}/cart/subCart","id="+id,function(){},"JSON"
             );
-        }
     }
 
     function add(id) {
@@ -115,7 +113,7 @@
             </li>
             <li class="th th-amount">
               <div class="box-btn layui-clear">
-                <div class="less layui-btn" onclick="sub(${animal.count},${animal.animal.id})">-</div>
+                <div class="less layui-btn" onclick="sub(${animal.animal.id})">-</div>
                 <input class="Quantity-input" type="" name="" value="${animal.count}" disabled="disabled">
                 <div class="add layui-btn" onclick="add(${animal.animal.id})">+</div>
               </div>

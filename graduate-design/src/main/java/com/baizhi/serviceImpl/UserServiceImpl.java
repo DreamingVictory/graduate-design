@@ -120,23 +120,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void regist(User user,String code, String phone) {
-        ValueOperations<String, String> strops = redisTemplate.opsForValue();
-        String validate = (String) strops.get(phone);
-        if (validate != null) {
-            if (validate.equals(code)) {
-                String salt = RandomSaltUtil.generetRandomSaltCode();
-                Md5Hash md5Hash = new Md5Hash(user.getPassword(), salt, 1024);
-                String pwd = md5Hash.toHex();
-                user.setPassword(pwd);
-                user.setSalt(salt);
-                userMapper.insertSelective(user);
-            } else {
-                throw new RuntimeException("验证码输入错误");
-            }
-        } else {
-            throw new RuntimeException("验证码不能为空");
-        }
+    public void regist(User user, String phone) {
+        String salt = RandomSaltUtil.generetRandomSaltCode();
+        Md5Hash md5Hash = new Md5Hash(user.getPassword(), salt, 1024);
+        String pwd = md5Hash.toHex();
+        user.setPassword(pwd);
+        user.setSalt(salt);
+        userMapper.insertSelective(user);
     }
 
     @Override
@@ -289,6 +279,37 @@ public class UserServiceImpl implements UserService {
         user.setPhone(principal);
         User user1 = userMapper.selectOne(user);
         return user1.getUsername();
+    }
+
+    @Override
+    public User queryUser() {
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        User user = new User();
+        user.setPhone(principal);
+        User user1 = userMapper.selectOne(user);
+        return user1;
+    }
+
+    @Override
+    public String changePersonalMessage(User user) {
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        User u = new User();
+        u.setPhone(principal);
+        User us = userMapper.selectOne(u);
+        if(!us.getUsername().equals(user.getUsername())){
+            User user1 = new User();
+            user1.setUsername(user.getUsername());
+            User user2 = userMapper.selectOne(user1);
+            if(user2!=null) return "用户名已存在";
+        }
+        if(!us.getPhone().equals(user.getPhone())){
+            User user3 = new User();
+            user3.setPhone(user.getPhone());
+            User user4 = userMapper.selectOne(user3);
+            if(user4!=null) return "手机号已存在";
+        }
+        userMapper.updateByPrimaryKeySelective(user);
+        return "ok";
     }
 
 }

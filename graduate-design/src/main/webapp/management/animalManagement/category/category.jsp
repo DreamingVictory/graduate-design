@@ -32,6 +32,7 @@
             pageSize: 5,
             pageList: [5, 10, 15, 20],
             columns: [[
+                {field: "id", title: "类别ID", width: 0.8},
                 {field: "title", title: "名字", width: 1},
                 {field: "parentId", title: "父级Id"}
 

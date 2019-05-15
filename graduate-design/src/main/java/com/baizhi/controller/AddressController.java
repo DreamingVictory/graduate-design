@@ -1,10 +1,13 @@
 package com.baizhi.controller;
 
+import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Address;
+import com.baizhi.entity.Animal;
 import com.baizhi.entity.User;
 import com.baizhi.mapper.AddressMapper;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.AddressService;
+import com.github.pagehelper.PageHelper;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,5 +50,17 @@ public class AddressController {
     public Address queryAddressById(String id){
         Address address = addressMapper.selectByPrimaryKey(id);
         return address;
+    }
+
+    @RequestMapping("updateAddress")
+    public void updateAddress(Address address){
+        addressMapper.updateByPrimaryKey(address);
+    }
+
+    @RequestMapping("queryAllAddress")
+    public PageBeanDto<Address> queryAllAddress(Integer page, Integer rows) {
+        PageHelper.startPage(page,rows);
+        PageBeanDto<Address> pageBeanDto = service.queryAllAddress();
+        return pageBeanDto;
     }
 }

@@ -1,6 +1,8 @@
 package com.baizhi.serviceImpl;
 
+import com.baizhi.dto.PageBeanDto;
 import com.baizhi.entity.Address;
+import com.baizhi.entity.Animal;
 import com.baizhi.entity.User;
 import com.baizhi.mapper.AddressMapper;
 import com.baizhi.mapper.UserMapper;
@@ -47,5 +49,16 @@ public class AddressServiceImpl implements AddressService {
         address.setUserId(user1.getId());
         addressMapper.addAddress(address);
         return address.getId().toString();
+    }
+
+    @Override
+    public PageBeanDto<Address> queryAllAddress(){
+        List<Address> addresses = addressMapper.selectAll();
+        int count = addressMapper.selectCount(null);
+        PageBeanDto<Address> pageBeanDto=new PageBeanDto<>();
+        pageBeanDto.setRows(addresses);
+        pageBeanDto.setTotal(count);
+        return pageBeanDto;
+
     }
 }

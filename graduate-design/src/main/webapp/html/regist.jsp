@@ -50,12 +50,6 @@
                   <input type="text" name="username" id="registUsername" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
                 </div>
               </div>
-              <div class="layui-inline veri-code">
-                <div class="layui-input-inline">
-                  <input id="pnumCode" type="text" name="code" lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
-                  <input id="punmRegistClick" type="button" class="layui-btn" <%--id="find"--%><%-- onclick="getCode()"--%> value="验证码" />
-                </div>
-              </div>
               <div class="layui-form-item login-btn">
                 <button id="registBtn" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" style="width: 300px">注册</button>
               </div>

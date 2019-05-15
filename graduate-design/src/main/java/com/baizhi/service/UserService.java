@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserService {
      void obtain(String phone);
 
-     void regist(User user,String code, String phone);
+     void regist(User user, String phone);
 
      void login(String phone, String password,String vcode, HttpSession session);
 
@@ -32,7 +32,10 @@ public interface UserService {
      PageBeanDto<User> queryAllUser(Integer page, Integer rows);
 
      String changePassword(String oldPassword, String newPassword,String newPassword2);
+
      String getUsername();
+     User queryUser();
+     String changePersonalMessage(User user);
 
 
 }

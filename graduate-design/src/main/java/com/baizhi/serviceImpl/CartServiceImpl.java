@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
 
             strOps.set(principal,map2);
             strOps.set("totalPrice",animal.getPrice()*count);
-
+            System.out.println(strOps.get("totalPrice"));
         }else{//购物车存在
             if(map.containsKey(id)){//该商品已存在
                 CartItem cartItem = map.get(id);
@@ -56,7 +56,7 @@ public class CartServiceImpl implements CartService {
                 Double totalPrice=(Double)strOps.get("totalPrice") + cartItem.getAnimal().getPrice()*cartItem.getCount();
                 strOps.set(principal,map);
                 strOps.set("totalPrice",totalPrice);
-
+                System.out.println(strOps.get("totalPrice"));
             }else{//商品不存在
                 CartItem cartItem=new CartItem();
                 Animal animal = animalMapper.selectByPrimaryKey(id);
@@ -68,6 +68,7 @@ public class CartServiceImpl implements CartService {
                 Double totalPrice=(Double)strOps.get("totalPrice") + animal.getPrice()*count;
                 strOps.set(principal,map);
                 strOps.set("totalPrice",totalPrice);
+                System.out.println(strOps.get("totalPrice"));
             }
         }
 
@@ -91,6 +92,7 @@ public class CartServiceImpl implements CartService {
             session.setAttribute("cartitem",animals);
             session.setAttribute("totalPrice",strOps.get("totalPrice"));
         }
+        System.out.println(strOps.get("totalPrice"));
         return "ok";
     }
 
@@ -103,6 +105,8 @@ public class CartServiceImpl implements CartService {
         }
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         map.remove(id);
+        CartItem cartItem = map.get(id);
+        strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
         strOps.set(principal,map);
     }
 
@@ -116,6 +120,8 @@ public class CartServiceImpl implements CartService {
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         for (Integer id : ids) {
             map.remove(id);
+            CartItem cartItem = map.get(id);
+            strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
         }
         strOps.set(principal,map);
     }
@@ -129,14 +135,18 @@ public class CartServiceImpl implements CartService {
         if(map != null && map.size() > 0){
             if(map.containsKey(id)){
                 CartItem cartItem = map.get(id);
-                cartItem.setCount(cartItem.getCount()-1);
-                cartItem.setTotalPrice(cartItem.getTotalPrice()-animal.getPrice());
+                if(cartItem.getCount()>1){
+                    cartItem.setCount(cartItem.getCount()-1);
+                    cartItem.setTotalPrice(cartItem.getTotalPrice()-animal.getPrice());
+                    Double totalPrice = (Double) strOps.get("totalPrice") - animal.getPrice();
+                    strOps.set("totalPrice",totalPrice);
+                    System.out.println(totalPrice);
+                }
                 map.put(id,cartItem);
             }
         }
         strOps.set(principal,map);
-        Double totalPrice = (Double) strOps.get("totalPrice") - animal.getPrice();
-        strOps.set("totalPrice",totalPrice);
+
     }
 
     @Override
@@ -156,5 +166,6 @@ public class CartServiceImpl implements CartService {
         strOps.set(principal,map);
         Double totalPrice = (Double) strOps.get("totalPrice") + animal.getPrice();
         strOps.set("totalPrice",totalPrice);
+        System.out.println(strOps.get("totalPrice"));
     }
 }

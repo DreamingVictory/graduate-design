@@ -16,8 +16,8 @@ public class OrderController {
     OrderService orderService;
 
     @RequestMapping("insertOrder")
-    public void insertOrder(Integer addressId, HttpSession session){
-        orderService.insertOrder(addressId,session);
+    public Order insertOrder(Integer addressId, HttpSession session){
+        return orderService.insertOrder(addressId,session);
     }
 
     @RequestMapping("queryAllOrders")

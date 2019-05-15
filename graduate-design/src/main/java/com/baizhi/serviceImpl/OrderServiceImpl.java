@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     OrderitemMapper orderitemMapper;
 
     @Override
-    public void insertOrder(Integer addressId, HttpSession session) {
+    public Order insertOrder(Integer addressId, HttpSession session) {
 
         ValueOperations strOps = redisTemplate.opsForValue();
         String principal = (String) SecurityUtils.getSubject().getPrincipal();
@@ -75,6 +75,10 @@ public class OrderServiceImpl implements OrderService {
 
 
         //清空购物车
+        redisTemplate.delete(principal);
+        redisTemplate.delete("totalPrice");
+
+        return order1;
 
     }
 

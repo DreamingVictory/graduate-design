@@ -30,8 +30,8 @@ public class UserController {
         service.obtain(phone);
     }
     @RequestMapping("regist")
-    public String regist(User user, String code, String phone){
-        service.regist(user, code, phone);
+    public String regist(User user, String phone){
+        service.regist(user, phone);
         return "redirect:/html/login.jsp";
     }
     @RequestMapping("login")
@@ -53,9 +53,10 @@ public class UserController {
     }
 
     @RequestMapping("findByPhone")
-    public String findByPhone(String phone,HttpSession session){
+    @ResponseBody
+    public User findByPhone(String phone,HttpSession session){
         User user = service.findByPhone(phone, session);
-        return "redirect:/html/info.jsp";
+        return user;
     }
 
     @RequestMapping("update")
@@ -106,6 +107,20 @@ public class UserController {
     @ResponseBody
     public String getUsername() {
         return service.getUsername();
+    }
+
+    @RequestMapping("queryUser")
+    @ResponseBody
+    public User queryUser(){
+        User user = service.queryUser();
+        return user;
+    }
+
+    @RequestMapping("changePersonalMessage")
+    @ResponseBody
+    public String changePersonalMessage(User user){
+        String s = service.changePersonalMessage(user);
+        return s;
     }
 
 }
