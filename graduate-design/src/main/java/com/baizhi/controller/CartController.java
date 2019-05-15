@@ -28,10 +28,29 @@ public class CartController {
         return "forward:/html/shopcart.jsp";
     }
 
+    @RequestMapping("getCart2")
+    public String getCartAnimal2(HttpSession session){
+        String result = service.getCartAnimal(session);
+        return "forward:/html/order.jsp";
+    }
+
     @RequestMapping("deleteCart")
     @ResponseBody
     public void deleteCartItem(Integer id){
         service.deleteCartItem(id);
+    }
+
+
+    @RequestMapping("subCart")
+    @ResponseBody
+    public void subCart(Integer id){
+        service.subCart(id);
+    }
+
+    @RequestMapping("plusCart")
+    @ResponseBody
+    public void plusCart(Integer id){
+        service.addCart(id);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.baizhi.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,11 @@ import java.util.List;
 @Table(name = "category")
 public class Category implements Serializable {
     @Id
+    @Excel(name = "Id")
     private Integer id;
+    @Excel(name = "标题")
     private String title;
+    @Excel(name = "父级标题")
     private Integer parentId;
 
     @Transient

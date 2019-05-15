@@ -34,14 +34,14 @@
             text: '导出',
             iconCls: 'icon-save',
             handler: function () {
-                location.href = "${pageContext.request.contextPath}/consumer/exportUser";
+                location.href = "${pageContext.request.contextPath}/user/exportUser";
             }
         }, {
             text: '导入',
             iconCls: 'icon-save',
             handler: function () {
                 $.post(
-                    "${pageContext.request.contextPath}/consumer/userImport",
+                    "${pageContext.request.contextPath}/user/userImport",
                     function () {
                         $.messager.show({
                             title: "系统提示",
@@ -57,8 +57,8 @@
             fitColumns: true,
             fit: true,
             singleSelect: true,
-            url: "${pageContext.request.contextPath}/consumer/queryAllUser",
-            updateUrl: "${pageContext.request.contextPath}/consumer/updateUser?data1=" + "近一周" + "&data2=" + "近二周" + "&data3=" + "近三周",
+            url: "${pageContext.request.contextPath}/user/queryAllUser",
+            updateUrl: "${pageContext.request.contextPath}/user/updateUser?data1=" + "近一周" + "&data2=" + "近二周" + "&data3=" + "近三周",
             pagination: true,
             pageSize: 5,
             pageList: [5, 10, 15, 20, 25],
@@ -69,8 +69,8 @@
                     field: 'status', title: '状态', width: 1, formatter: showStatus,
                     editor: {type: "text", options: {required: true}}//添加该属性后，表示该列可以双击进行修改
                 },
-                {field: 'name', title: '昵称', width: 1},
-                {field: 'dharma', title: '真实姓名', width: 1},
+                {field: 'username', title: '昵称', width: 1},
+                {field: 'realName', title: '真实姓名', width: 1},
                 {field: 'sex', title: '性别'}
             ]],
 

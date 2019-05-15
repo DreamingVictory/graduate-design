@@ -31,7 +31,9 @@
                 page = "${param.pageNo}";
                 $("#currentPage").text(page);
                 status=0;
-
+                $.post("${pageContext.request.contextPath}/user/getUsername",function(res){
+                    $("#loginUser").text(res);
+                },"JSON");
 
                 $.ajax({
                     type:"POST",
@@ -93,7 +95,7 @@
                                 "                                <div class=\"text\">\n" +
                                 "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                 "                                    <p class=\"price\">\n" +
-                                "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                 "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                 "                                    </p>\n" +
                                 "                                </div>\n" +
@@ -144,7 +146,7 @@
                                     "                                <div class=\"text\">\n" +
                                     "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                     "                                    <p class=\"price\">\n" +
-                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                     "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                     "                                    </p>\n" +
                                     "                                </div>\n" +
@@ -171,7 +173,6 @@
                             $("#list-cont").empty();
                             for (var i = 0; i < res.length; i++) {
                                 var animal = res[i];
-
                                 var div = "<div class=\"item\">\n" +
                                     "                                <div class=\"img\">\n" +
                                     "                                    <a href='${pageContext.request.contextPath}/animal/queryOneById?id="+animal.id+"'><img\n" +
@@ -181,7 +182,7 @@
                                     "                                <div class=\"text\">\n" +
                                     "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                     "                                    <p class=\"price\">\n" +
-                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                     "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                     "                                    </p>\n" +
                                     "                                </div>\n" +
@@ -218,7 +219,7 @@
                                     "                                <div class=\"text\">\n" +
                                     "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                     "                                    <p class=\"price\">\n" +
-                                    "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                    "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                     "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                     "                                    </p>\n" +
                                     "                                </div>\n" +
@@ -253,7 +254,7 @@
                                         "                                <div class=\"text\">\n" +
                                         "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                         "                                    <p class=\"price\">\n" +
-                                        "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                        "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                         "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                         "                                    </p>\n" +
                                         "                                </div>\n" +
@@ -292,7 +293,7 @@
                                         "                                <div class=\"text\">\n" +
                                         "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                                         "                                    <p class=\"price\">\n" +
-                                        "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                                        "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                                         "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                                         "                                    </p>\n" +
                                         "                                </div>\n" +
@@ -348,7 +349,7 @@
                             "                                <div class=\"text\">\n" +
                             "                                    <p class=\"title\">"+animal.title+"</p>\n" +
                             "                                    <p class=\"price\">\n" +
-                            "                                        <span class=\"pri\">￥"+animal.ciurPic+"</span>\n" +
+                            "                                        <span class=\"pri\">￥"+animal.price+"</span>\n" +
                             "                                        <span class=\"nub\">"+animal.count+"付款</span>\n" +
                             "                                    </p>\n" +
                             "                                </div>\n" +
@@ -359,7 +360,11 @@
                 }
             });
         }
-
+        function clickme(){
+            if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+                location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+            }
+        }
     </script>
 </head>
 <body>

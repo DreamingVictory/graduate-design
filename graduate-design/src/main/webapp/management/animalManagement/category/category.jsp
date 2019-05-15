@@ -12,7 +12,7 @@
         text: '导出',
         iconCls: 'icon-save',
         handler: function () {
-            location.href = "${pageContext.request.contextPath}/album/export";
+            location.href = "${pageContext.request.contextPath}/category/exportCategory";
         }
     }]
 

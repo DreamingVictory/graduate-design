@@ -1,5 +1,8 @@
 package com.baizhi.serviceImpl;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
@@ -9,9 +12,17 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.baizhi.conf.RandomSaltUtil;
+import com.baizhi.dto.PageBeanDto;
+import com.baizhi.dto.Province;
+import com.baizhi.dto.SexDto;
+import com.baizhi.entity.Consumer;
 import com.baizhi.entity.User;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.UserService;
+import com.github.pagehelper.PageHelper;
+import io.goeasy.GoEasy;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -25,8 +36,11 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Random;
+import java.net.URLEncoder;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -146,6 +160,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Province> groupByProvince() {
+        List<Province> provinces = userMapper.groupByProvince();
+        return provinces;
+    }
+
+    @Override
+    public List<Integer> statisCount(String data1, String data2, String data3) {
+        List<Integer> list = new ArrayList<Integer>();
+
+        Integer integer1 = userMapper.staticsCount(data1);
+        Integer integer2 = userMapper.staticsCount(data2);
+        Integer integer3 = userMapper.staticsCount(data3);
+        list.add(integer1);
+        list.add(integer2);
+        list.add(integer3);
+
+        return list;
+    }
+
+    @Override
     public User findByPhone(String phone,HttpSession session) {
         User user1=new User();
         user1.setPhone(phone);
@@ -159,4 +193,102 @@ public class UserServiceImpl implements UserService {
     public void update(User user){
        userMapper.updateByPrimaryKey(user);
     }
+
+    @Override
+    public void updateUser(User user, String data1, String data2, String data3) {
+        //用户状态发生修改  冻结/未冻结
+        userMapper.updateByPrimaryKeySelective(user);
+        //实现数据表格的实时更新
+        List<Integer> list = new ArrayList<Integer>();
+        Integer integer1 = userMapper.staticsCount(data1);
+        Integer integer2 = userMapper.staticsCount(data2);
+        Integer integer3 = userMapper.staticsCount(data3);
+        list.add(integer1);
+        list.add(integer2);
+        list.add(integer3);
+
+        String s = JSONObject.toJSONString(list);
+
+        GoEasy goEasy = new GoEasy("http://rest-hangzhou.goeasy.io", "BC-866c45c541e54fb6a416e17428daedcd");
+        goEasy.publish("cmfz", s);
+
+        //用户分布图
+        Map<String, List<SexDto>> map = new HashMap<String, List<SexDto>>();
+
+        List<SexDto> listMale = userMapper.groupBySex("男");
+        List<SexDto> listFemale = userMapper.groupBySex("女");
+        map.put("male", listMale);
+        map.put("female", listFemale);
+        String s1 = JSONObject.toJSONString(map);
+
+        goEasy.publish("userProfile", s1);
+    }
+
+    @Override
+    public void exportUser(HttpServletResponse response, HttpServletRequest request) {
+        List<User> users = userMapper.selectAll();
+        for (int i = 0; i < users.size(); i++) {
+            users.get(i).setHeadPic(request.getSession().getServletContext().getRealPath("/upload/") + users.get(i).getHeadPic());
+        }
+
+        Workbook workbook = ExcelExportUtil.exportBigExcel(new ExportParams("用户一览表", "用户表"), User.class, users);
+
+        try {
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("用户表.xls", "UTF-8"));
+            response.setContentType("application/vnd.ms-excel");
+            workbook.write(response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public PageBeanDto<User> queryAllUser(Integer page, Integer rows) {
+        PageHelper.startPage(page, rows);
+        List<User> users = userMapper.selectAll();
+        if (users.isEmpty()) {
+            throw new RuntimeException("用户列表不存在...");
+        }
+        PageBeanDto pb = new PageBeanDto();
+        pb.setRows(users);
+        pb.setTotal(userMapper.selectCount(null));
+        return pb;
+    }
+
+    @Override
+    public String changePassword(String oldPassword, String newPassword, String newPassword2) {
+        if(!newPassword.equals(newPassword2)){
+            return "两次新密码输入不一致";
+        }
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        User user = new User();
+        user.setPhone(principal);
+        User user1 = userMapper.selectOne(user);
+        String salt = user1.getSalt();
+        Md5Hash md5Hash = new Md5Hash(oldPassword, salt, 1024);
+        String pwd = md5Hash.toHex();
+
+        if(!pwd.equals(user1.getPassword())){
+            return "旧密码错误";
+        }
+
+        Md5Hash md5 = new Md5Hash(newPassword, salt, 1024);
+        String newPass = md5.toHex();
+
+        User user2 = new User();
+        user2.setPassword(newPass);
+        user2.setId(user1.getId());
+        userMapper.updateByPrimaryKeySelective(user2);
+        return "ok";
+    }
+
+    @Override
+    public String getUsername() {
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        User user = new User();
+        user.setPhone(principal);
+        User user1 = userMapper.selectOne(user);
+        return user1.getUsername();
+    }
+
 }

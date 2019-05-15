@@ -13,12 +13,36 @@
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <script>
 
+    $(function(){
+        $.post("${pageContext.request.contextPath}/user/getUsername",function(res){
+            $("#loginUser").text(res);
+        },"JSON");
+    });
+
     function del(id) {
         $.post(
             "${pageContext.request.contextPath}/cart/deleteCart","id="+id,function(){},"JSON"
         );
     }
 
+    function sub(count,id) {
+        if(count > 1){
+            $.post(
+                "${pageContext.request.contextPath}/cart/subCart","id="+id,function(){},"JSON"
+            );
+        }
+    }
+
+    function add(id) {
+        $.post(
+            "${pageContext.request.contextPath}/cart/plusCart","id="+id,function(){},"JSON"
+        );
+    }
+    function clickme(){
+        if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+            location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+        }
+    }
   </script>
 
 </head>
@@ -91,9 +115,9 @@
             </li>
             <li class="th th-amount">
               <div class="box-btn layui-clear">
-                <div class="less layui-btn">-</div>
+                <div class="less layui-btn" onclick="sub(${animal.count},${animal.animal.id})">-</div>
                 <input class="Quantity-input" type="" name="" value="${animal.count}" disabled="disabled">
-                <div class="add layui-btn">+</div>
+                <div class="add layui-btn" onclick="add(${animal.animal.id})">+</div>
               </div>
             </li>
             <li class="th th-sum">
@@ -120,7 +144,7 @@
           <span class="batch-dele-btn">批量删除</span>
         </div>
         <div class="th Settlement">
-          <button class="layui-btn"><a href="${pageContext.request.contextPath}/html/order.jsp">结算</a></button>
+          <button class="layui-btn"><a href="${pageContext.request.contextPath}/cart/getCart2">结算</a></button>
         </div>
         <div class="th total">
           <p>应付：<span class="pieces-total">0</span></p>

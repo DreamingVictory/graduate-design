@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,7 @@ public class CategoryController {
         List<Category> categories = service.queryAllCategory();
         return categories;
     }
-   /* public PageBeanDto<Category> queryAllCategory(Integer page,Integer rows){
-        PageHelper.startPage(page,rows);
-        PageBeanDto<Category> pageBeanDto= service.queryAllCategory(page,rows);
-        return pageBeanDto;
-    }*/
+
     @RequestMapping("queryAllSecondCategory")
     public List<Category> queryAllSecondCategory(){
         List<Category> categories = service.queryAllCategory();
@@ -47,5 +45,10 @@ public class CategoryController {
     @RequestMapping("insertCategory")
     public void insertCategory(Category category) {
         service.insertCategory(category);
+    }
+
+    @RequestMapping("exportCategory")
+    public void exportCategory(HttpServletResponse response, HttpServletRequest request){
+        service.exportCategory(response,request);
     }
 }

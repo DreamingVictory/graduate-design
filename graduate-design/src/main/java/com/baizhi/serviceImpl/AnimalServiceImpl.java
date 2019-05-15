@@ -290,9 +290,9 @@ public class AnimalServiceImpl implements AnimalService {
 
                 Example example=new Example(Animal.class);
                 if(status.equals(0))
-                    example.setOrderByClause("ciur_pic DESC");
+                    example.setOrderByClause("price DESC");
                 else
-                    example.setOrderByClause("ciur_pic ASC");
+                    example.setOrderByClause("price ASC");
 
                 example.createCriteria().andEqualTo("categoryId",id);
                 List<Animal> animalList = animalMapper.selectByExample(example);
@@ -303,9 +303,9 @@ public class AnimalServiceImpl implements AnimalService {
                 List<Integer> list = categoryMapper.categoryChildren(id);
                 Example example=new Example(Animal.class);
                 if(status.equals(0))
-                    example.setOrderByClause("ciur_pic DESC");
+                    example.setOrderByClause("price DESC");
                 else
-                    example.setOrderByClause("ciur_pic ASC");
+                    example.setOrderByClause("price ASC");
                 example.createCriteria().andIn("categoryId",list);
                 List<Animal> animalList = animalMapper.selectByExample(example);
 
@@ -315,9 +315,9 @@ public class AnimalServiceImpl implements AnimalService {
         }
         Example example=new Example(Animal.class);
         if(status.equals(0))
-            example.setOrderByClause("ciur_pic DESC");
+            example.setOrderByClause("price DESC");
         else
-            example.setOrderByClause("ciur_pic ASC");
+            example.setOrderByClause("price ASC");
         example.createCriteria().andEqualTo("categoryId",id);
         List<Animal> animalList = animalMapper.selectByExample(example);
 

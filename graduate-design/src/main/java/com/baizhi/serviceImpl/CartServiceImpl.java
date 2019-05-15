@@ -51,8 +51,9 @@ public class CartServiceImpl implements CartService {
                 CartItem cartItem = map.get(id);
                 cartItem.setCount(cartItem.getCount()+count);
                 cartItem.setTotalPrice(cartItem.getAnimal().getPrice()*cartItem.getCount());
+                map.put(id,cartItem);
 
-                Double totalPrice=(Double)strOps.get("totalPrice");
+                Double totalPrice=(Double)strOps.get("totalPrice") + cartItem.getAnimal().getPrice()*cartItem.getCount();
                 strOps.set(principal,map);
                 strOps.set("totalPrice",totalPrice);
 
@@ -64,7 +65,7 @@ public class CartServiceImpl implements CartService {
                 cartItem.setTotalPrice(animal.getPrice()*count);
                 map.put(id,cartItem);
 
-                Double totalPrice=(Double)strOps.get("totalPrice");
+                Double totalPrice=(Double)strOps.get("totalPrice") + animal.getPrice()*count;
                 strOps.set(principal,map);
                 strOps.set("totalPrice",totalPrice);
             }
@@ -81,15 +82,15 @@ public class CartServiceImpl implements CartService {
             return "error";
         }
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
-        List<CartItem> animals=new ArrayList<>();
-        Double totalPrice=0.0;
-        Set<Integer> integers = map.keySet();
-        for (Integer integer : integers) {
-            animals.add(map.get(integer));
-            totalPrice+=map.get(integer).getTotalPrice();
+        if(map != null && map.size() > 0){
+            List<CartItem> animals=new ArrayList<>();
+            Set<Integer> integers = map.keySet();
+            for (Integer integer : integers) {
+                animals.add(map.get(integer));
+            }
+            session.setAttribute("cartitem",animals);
+            session.setAttribute("totalPrice",strOps.get("totalPrice"));
         }
-        session.setAttribute("cartitem",animals);
-        session.setAttribute("totalPrice",totalPrice);
         return "ok";
     }
 
@@ -103,5 +104,57 @@ public class CartServiceImpl implements CartService {
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         map.remove(id);
         strOps.set(principal,map);
+    }
+
+    @Override
+    public void batchDelete(List<Integer> ids){
+        ValueOperations strOps = redisTemplate.opsForValue();
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        if(principal==null){
+            return ;
+        }
+        Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
+        for (Integer id : ids) {
+            map.remove(id);
+        }
+        strOps.set(principal,map);
+    }
+
+    @Override
+    public void subCart(Integer id) {
+        Animal animal = animalMapper.selectByPrimaryKey(id);
+        ValueOperations strOps = redisTemplate.opsForValue();
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
+        if(map != null && map.size() > 0){
+            if(map.containsKey(id)){
+                CartItem cartItem = map.get(id);
+                cartItem.setCount(cartItem.getCount()-1);
+                cartItem.setTotalPrice(cartItem.getTotalPrice()-animal.getPrice());
+                map.put(id,cartItem);
+            }
+        }
+        strOps.set(principal,map);
+        Double totalPrice = (Double) strOps.get("totalPrice") - animal.getPrice();
+        strOps.set("totalPrice",totalPrice);
+    }
+
+    @Override
+    public void addCart(Integer id) {
+        Animal animal = animalMapper.selectByPrimaryKey(id);
+        ValueOperations strOps = redisTemplate.opsForValue();
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
+        if(map != null && map.size() > 0){
+            if(map.containsKey(id)){
+                CartItem cartItem = map.get(id);
+                cartItem.setCount(cartItem.getCount()+1);
+                cartItem.setTotalPrice(cartItem.getTotalPrice()+animal.getPrice());
+                map.put(id,cartItem);
+            }
+        }
+        strOps.set(principal,map);
+        Double totalPrice = (Double) strOps.get("totalPrice") + animal.getPrice();
+        strOps.set("totalPrice",totalPrice);
     }
 }

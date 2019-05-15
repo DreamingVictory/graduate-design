@@ -10,18 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface ConsumerService {
-    public List<Integer> statisCount(String data1, String data2, String data3);
+     List<Integer> statisCount(String data1, String data2, String data3);
 
-    public List<Province> groupByProvince();
+     List<Province> groupByProvince();
 
-    public List<SexDto> groupBySex(String sex);
+     List<SexDto> groupBySex(String sex);
 
+     PageBeanDto<Consumer> queryAllUser(Integer page, Integer rows);
 
-    public PageBeanDto<Consumer> queryAllUser(Integer page, Integer rows);
+     void updateUser(Consumer user, String data1, String data2, String data3);
 
-    public void updateUser(Consumer user, String data1, String data2, String data3);
+     void exportUser(HttpServletResponse response, HttpServletRequest request);
 
-    public void exportUser(HttpServletResponse response, HttpServletRequest request);
-
-    public void userImport();
+     void userImport();
 }

@@ -18,6 +18,9 @@
         var address;
         var aaa = 0;
         $(function () {
+            $.post("${pageContext.request.contextPath}/user/getUsername",function(res){
+                $("#loginUser").text(res);
+            },"JSON");
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/address/queryHistoryAddress",
@@ -109,7 +112,12 @@
         })
 
         function submit() {
-            location.href="${pageContext.request.contextPath}/order/insertOrder?addressId="+$("#history").val();
+            location.href="${pageContext.request.contextPath}/html/orderSuucess.jsp?addressId="+$("#history").val();
+        }
+        function clickme(){
+            if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+                location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+            }
         }
     </script>
 </head>
@@ -196,9 +204,7 @@
                         </li>
                         <li class="th th-amount">
                             <div class="box-btn layui-clear">
-                                <div class="less layui-btn">-</div>
-                                <input class="Quantity-input" type="" name="" value="1" disabled="disabled">
-                                <div class="add layui-btn">+</div>
+                                <input class="Quantity-input" type="" name="" value="${animal.count}" disabled="disabled">
                             </div>
                         </li>
                         <li class="th th-sum">

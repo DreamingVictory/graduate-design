@@ -2,6 +2,7 @@ package com.baizhi.controller;
 
 import com.baizhi.entity.Address;
 import com.baizhi.entity.User;
+import com.baizhi.mapper.AddressMapper;
 import com.baizhi.mapper.UserMapper;
 import com.baizhi.service.AddressService;
 import org.apache.shiro.SecurityUtils;
@@ -20,6 +21,9 @@ public class AddressController {
     @Autowired
     UserMapper userMapper;
 
+    @Autowired
+    AddressMapper addressMapper;
+
     @RequestMapping("queryHistoryAddress")
     public List<Address> queryHistoryAddress(){
         String principal = (String) SecurityUtils.getSubject().getPrincipal();
@@ -37,5 +41,11 @@ public class AddressController {
     public String addAddress(Address address){
         String s = service.addAddress(address);
         return s;
+    }
+
+    @RequestMapping("queryAddressById")
+    public Address queryAddressById(String id){
+        Address address = addressMapper.selectByPrimaryKey(id);
+        return address;
     }
 }

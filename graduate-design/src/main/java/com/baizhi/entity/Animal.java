@@ -24,7 +24,6 @@ public class Animal implements Serializable {
     private Integer id;
     private String img;
     private String title;
-//    @Column(name = "ciur_pic")
     private Double price;
     private Double cost;
     private String discount;

@@ -67,7 +67,9 @@
                         id=window.setInterval(fun,1000);
                     }
                 }*/
-
+                $.post("${pageContext.request.contextPath}/user/getUsername",function(res){
+                    $("#loginUser").text(res);
+                },"JSON");
 
                 /*查询所有的分类*/
                 $.post(
@@ -167,18 +169,9 @@
         })
 
         function clickme(){
-            $.ajax({
-                type:"POST",
-                url:"${pageContext.request.contextPath}/animal/queryAllLucene",
-                data:"params="+$("#searchByLucene").val(),
-                dataType:"JSON",
-                async: false,
-                success:function(res){
-                    if(res!=null){
-                        location.href="${pageContext.request.contextPath}/html/commodity.jsp";
-                    }
-                }
-            });
+            if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+                location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+            }
         }
 
     </script>

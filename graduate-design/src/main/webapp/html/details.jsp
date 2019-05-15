@@ -34,6 +34,9 @@
       });
 
       $(function(){
+          $.post("${pageContext.request.contextPath}/user/getUsername",function(res){
+              $("#loginUser").text(res);
+          },"JSON");
           $(".image").mouseover(function(e){
               var bigImg=$("<img id='bimg' src='"+$(this).attr("src")+"'/>");
               $("#bimg").css({
@@ -97,6 +100,11 @@
                 }
             }
         );
+      }
+      function clickme(){
+          if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+              location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+          }
       }
   </script>
 </head>

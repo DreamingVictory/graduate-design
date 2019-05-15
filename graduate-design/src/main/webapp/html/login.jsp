@@ -65,7 +65,11 @@
                 );
             })
         })
-
+        function clickme(){
+            if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+                location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+            }
+        }
     </script>
 </head>
 <body>

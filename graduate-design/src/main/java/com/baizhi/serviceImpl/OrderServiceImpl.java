@@ -1,10 +1,7 @@
 package com.baizhi.serviceImpl;
 
 import com.baizhi.entity.*;
-import com.baizhi.mapper.AnimalMapper;
-import com.baizhi.mapper.OrderMapper;
-import com.baizhi.mapper.OrderitemMapper;
-import com.baizhi.mapper.UserMapper;
+import com.baizhi.mapper.*;
 import com.baizhi.service.OrderService;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 @Service
@@ -28,6 +26,8 @@ public class OrderServiceImpl implements OrderService {
     UserMapper userMapper;
     @Autowired
     AnimalMapper animalMapper;
+    @Autowired
+    private AddressMapper addressMapper;
     @Autowired
     OrderitemMapper orderitemMapper;
 
@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
             Animal animal = animalMapper.selectByPrimaryKey(k);
             Integer count = animal.getCount();
             animal.setCount(count+map.get(k).getCount());
-            animalMapper.selectCount(animal);
+            animalMapper.updateByPrimaryKeySelective(animal);
             Orderitem orderitem=new Orderitem();
 
             orderitem.setOrderId(order.getOrderId());
@@ -67,11 +67,43 @@ public class OrderServiceImpl implements OrderService {
 
             //根据商品id更改该商品的saleCount
             orderitem.setTotalPrice(cartItem.getTotalPrice());
-            orderitemMapper.insert(orderitem);
+            orderitemMapper.insertSelective(orderitem);
         }
         //通过订单id查一个  显示订单成功界面
         Order order1 = orderMapper.selectByPrimaryKey(order.getOrderId());
         session.setAttribute("order1", order1);
 
+
+        //清空购物车
+
+    }
+
+    @Override
+    public List<Order> queryAllOrders() {
+        String principal = (String)SecurityUtils.getSubject().getPrincipal();
+        User user = new User();
+        user.setPhone(principal);
+        User user1 = userMapper.selectOne(user);
+        Order order = new Order();
+        order.setUserId(user1.getId());
+        List<Order> select = orderMapper.select(order);
+
+        for (Order order1 : select) {
+            Address address = addressMapper.selectByPrimaryKey(order1.getAddressId());
+            order1.setAddress(address);
+        }
+        return select;
+    }
+
+    @Override
+    public void delOrder(Integer id){
+        orderMapper.deleteByPrimaryKey(id);
+
+        Orderitem orderitem=new Orderitem();
+        orderitem.setOrderId(id);
+        List<Orderitem> list = orderitemMapper.select(orderitem);
+        for (Orderitem orderitem1 : list) {
+            orderitemMapper.delete(orderitem1);
+        }
     }
 }

@@ -10,6 +10,14 @@
   <script type="text/javascript" src="${pageContext.request.contextPath}/res/js/jquery.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+
+  <script type="text/javascript">
+      function clickme(){
+          if($("#searchByLucene").val() != null && $("#searchByLucene").val() != ""){
+              location.href="${pageContext.request.contextPath}/html/commodity2.jsp?page=1&pageRows=9&text="+$("#searchByLucene").val();
+          }
+      }
+  </script>
 </head>
 <body>
 
