@@ -36,21 +36,24 @@ public class CartController {
 
     @RequestMapping("deleteCart")
     @ResponseBody
-    public void deleteCartItem(Integer id){
-        service.deleteCartItem(id);
+    public Double deleteCartItem(Integer id,HttpSession session){
+        Double s = service.deleteCartItem(id, session);
+        return s;
     }
 
 
     @RequestMapping("subCart")
     @ResponseBody
-    public void subCart(Integer id){
-        service.subCart(id);
+    public Double subCart(Integer id,HttpSession session){
+        return service.subCart(id,session);
     }
 
     @RequestMapping("plusCart")
     @ResponseBody
-    public void plusCart(Integer id){
-        service.addCart(id);
+    public Double plusCart(Integer id,HttpSession session){
+        return service.addCart(id,session);
     }
+
+
 
 }

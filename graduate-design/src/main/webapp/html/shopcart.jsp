@@ -20,20 +20,38 @@
     });
 
     function del(id) {
-        $.post(
-            "${pageContext.request.contextPath}/cart/deleteCart","id="+id,function(){},"JSON"
-        );
+        $.ajax({
+            type:"POST",
+            url:"${pageContext.request.contextPath}/cart/deleteCart",
+            data:"id="+id,
+            dataType:"JSON",
+            async:false,
+            success:function(res){
+                $("#totalDiv").empty();
+                var div = "<p>应付：<span class=\"pieces-total\" id=\"carTotalPrice\">"+res+"</span></p>";
+                $("#totalDiv").append(div);
+                location.href="${pageContext.request.contextPath}/cart/getCart";
+            }
+        });
     }
 
     function sub(id) {
             $.post(
-                "${pageContext.request.contextPath}/cart/subCart","id="+id,function(){},"JSON"
+                "${pageContext.request.contextPath}/cart/subCart","id="+id,function(res){
+                    $("#totalDiv").empty();
+                    var div = "<p>应付：<span class=\"pieces-total\" id=\"carTotalPrice\">"+res+"</span></p>";
+                    $("#totalDiv").append(div);
+                },"JSON"
             );
     }
 
     function add(id) {
         $.post(
-            "${pageContext.request.contextPath}/cart/plusCart","id="+id,function(){},"JSON"
+            "${pageContext.request.contextPath}/cart/plusCart","id="+id,function(res){
+                $("#totalDiv").empty();
+                var div = "<p>应付：<span class=\"pieces-total\" id=\"carTotalPrice\">"+res+"</span></p>";
+                $("#totalDiv").append(div);
+            },"JSON"
         );
     }
     function clickme(){
@@ -54,14 +72,6 @@
     </div>
     <div class="cart w1200">
       <div class="cart-table-th">
-        <div class="th th-chk">
-          <div class="select-all">
-            <div class="cart-checkbox">
-              <input class="check-all check" id="allCheckked" type="checkbox" value="true">
-            </div>
-          <label>&nbsp;&nbsp;全选</label>
-          </div>
-        </div>
         <div class="th th-item">
           <div class="th-inner">
             商品
@@ -93,18 +103,11 @@
         <div class="order-content" id="list-cont">
           <c:forEach items="${sessionScope.cartitem}" var="animal">
           <ul class="item-content layui-clear">
-            <li class="th th-chk">
-              <div class="select-all">
-                <div class="cart-checkbox">
-                  <input class="CheckBoxShop check"  type="checkbox" num="all" name="select-all" value="true">
-                </div>
-              </div>
-            </li>
             <li class="th th-item">
               <div class="item-cont">
                 <a href="javascript:;"><img width="20px" height="20px" style="margin: 0px 0px 20px 50px" src=http://192.168.46.138/${animal.animal.img} /></a>
                 <div class="text">
-                  <div class="title">${animal.animal.title}</div>
+                  <div class="title" style="text-align:center;">${animal.animal.title}</div>
                 </div>
               </div>
             </li>
@@ -133,19 +136,17 @@
         <div class="th th-chk">
           <div class="select-all">
             <div class="cart-checkbox">
-              <input class="check-all check" id="" name="select-all" type="checkbox"  value="true">
             </div>
-            <label>&nbsp;&nbsp;已选<span class="Selected-pieces">0</span>件</label>
           </div>
         </div>
         <div class="th batch-deletion">
-          <span class="batch-dele-btn">批量删除</span>
+
         </div>
         <div class="th Settlement">
           <button class="layui-btn"><a href="${pageContext.request.contextPath}/cart/getCart2">结算</a></button>
         </div>
-        <div class="th total">
-          <p>应付：<span class="pieces-total">0</span></p>
+        <div class="th total" id="totalDiv">
+          <p>应付：<span class="pieces-total" id="carTotalPrice">${sessionScope.totalPrice}</span></p>
         </div>
       </div>
     </div>

@@ -29,7 +29,7 @@
         <div class="headerCon">
             <h1 class="mallLogo">
                 <a href="#" title="宠物商城">
-                    <img src="../res/static/img/logo.png">
+                    <%--<img src="../res/static/img/logo.png">--%>
                 </a>
             </h1>
             <div class="mallSearch">

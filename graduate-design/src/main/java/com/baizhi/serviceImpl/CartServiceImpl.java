@@ -97,20 +97,34 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCartItem(Integer id){
+    public Double deleteCartItem(Integer id,HttpSession  session){
         ValueOperations strOps = redisTemplate.opsForValue();
         String principal = (String)SecurityUtils.getSubject().getPrincipal();
-        if(principal==null){
-            return ;
-        }
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
-        map.remove(id);
-        CartItem cartItem = map.get(id);
-        System.out.println(cartItem);
-        System.out.println(strOps.get("totalPrice"));
-        System.out.println(cartItem.getTotalPrice());
-        strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
-        strOps.set(principal,map);
+        List<CartItem> list = (List<CartItem>) session.getAttribute("cartitem");
+        if(list!=null && list.size()>0){
+            for (int i=0; i<list.size(); i++) {
+                CartItem cartItem = list.get(i);
+                Animal animal = cartItem.getAnimal();
+                if(id.equals(animal.getId())){
+                    list.remove(i);
+                    Double totalPrice = (Double) session.getAttribute("totalPrice");
+                    session.setAttribute("totalPrice",totalPrice - cartItem.getTotalPrice());
+                }
+            }
+            session.setAttribute("cartitem",list);
+        }
+        if(map!=null && map.size()>0){
+            CartItem cartItem = map.get(id);
+            map.remove(id);
+            strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
+            strOps.set(principal,map);
+            session.setAttribute("totalPrice",strOps.get("totalPrice"));
+            return (Double) session.getAttribute("totalPrice");
+        }
+
+        return null;
+
     }
 
     @Override
@@ -122,15 +136,15 @@ public class CartServiceImpl implements CartService {
         }
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         for (Integer id : ids) {
-            map.remove(id);
             CartItem cartItem = map.get(id);
+            map.remove(id);
             strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
         }
         strOps.set(principal,map);
     }
 
     @Override
-    public void subCart(Integer id) {
+    public Double subCart(Integer id,HttpSession session) {
         Animal animal = animalMapper.selectByPrimaryKey(id);
         ValueOperations strOps = redisTemplate.opsForValue();
         String principal = (String)SecurityUtils.getSubject().getPrincipal();
@@ -149,11 +163,11 @@ public class CartServiceImpl implements CartService {
             }
         }
         strOps.set(principal,map);
-
+        return (Double) strOps.get("totalPrice");
     }
 
     @Override
-    public void addCart(Integer id) {
+    public Double addCart(Integer id,HttpSession session) {
         Animal animal = animalMapper.selectByPrimaryKey(id);
         ValueOperations strOps = redisTemplate.opsForValue();
         String principal = (String)SecurityUtils.getSubject().getPrincipal();
@@ -170,5 +184,6 @@ public class CartServiceImpl implements CartService {
         Double totalPrice = (Double) strOps.get("totalPrice") + animal.getPrice();
         strOps.set("totalPrice",totalPrice);
         System.out.println(strOps.get("totalPrice"));
+        return (Double) strOps.get("totalPrice");
     }
 }

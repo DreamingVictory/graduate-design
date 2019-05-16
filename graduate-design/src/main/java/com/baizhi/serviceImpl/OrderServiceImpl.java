@@ -77,7 +77,8 @@ public class OrderServiceImpl implements OrderService {
         //清空购物车
         redisTemplate.delete(principal);
         redisTemplate.delete("totalPrice");
-
+        session.removeAttribute("totalPrice");
+        session.removeAttribute("cartitem");
         return order1;
 
     }
