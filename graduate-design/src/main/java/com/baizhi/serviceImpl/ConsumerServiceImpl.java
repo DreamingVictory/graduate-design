@@ -114,7 +114,7 @@ public class ConsumerServiceImpl implements ConsumerService {
             users.get(i).setHeadPic(request.getSession().getServletContext().getRealPath("/upload/") + users.get(i).getHeadPic());
         }
 
-        Workbook workbook = ExcelExportUtil.exportBigExcel(new ExportParams("用户一览表", "用户表"), Consumer.class, users);
+        Workbook workbook = ExcelExportUtil.exportBigExcel(new ExportParams("管理员一览表", "管理员表"), Consumer.class, users);
 
         try {
             response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("用户表.xls", "UTF-8"));

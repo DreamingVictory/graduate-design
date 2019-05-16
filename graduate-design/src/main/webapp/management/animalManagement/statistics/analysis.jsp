@@ -24,7 +24,7 @@
     myChart.setOption(option);
 
     $.post(
-        "${pageContext.request.contextPath}/consumer/statisCount",
+        "${pageContext.request.contextPath}/user/statisCount",
         "data1=" + option.xAxis.data[0] + "&data2=" + option.xAxis.data[1] + "&data3=" + option.xAxis.data[2],
         function (result) {
             console.log(result);

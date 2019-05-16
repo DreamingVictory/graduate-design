@@ -106,6 +106,9 @@ public class CartServiceImpl implements CartService {
         Map<Integer, CartItem> map =(Map<Integer, CartItem>) strOps.get(principal);
         map.remove(id);
         CartItem cartItem = map.get(id);
+        System.out.println(cartItem);
+        System.out.println(strOps.get("totalPrice"));
+        System.out.println(cartItem.getTotalPrice());
         strOps.set("totalPrice",(Double)strOps.get("totalPrice")-cartItem.getTotalPrice());
         strOps.set(principal,map);
     }

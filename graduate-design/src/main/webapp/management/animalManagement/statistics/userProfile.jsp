@@ -69,7 +69,7 @@
         };
         myChart.setOption(option);
         $.post(
-            "${pageContext.request.contextPath}/consumer/groupBySex",
+            "${pageContext.request.contextPath}/user/groupBySex",
             "sex=" + "男",
             function (res) {
                 myChart.setOption({
@@ -82,7 +82,7 @@
             }, "JSON"
         );
         $.post(
-            "${pageContext.request.contextPath}/consumer/groupBySex",
+            "${pageContext.request.contextPath}/user/groupBySex",
             "sex=" + "女",
             function (res) {
                 myChart.setOption({
